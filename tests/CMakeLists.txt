@@ -1,4 +1,4 @@
-set(UNIT_TEST_SOURCES test_sys_env_var.c)
+set(UNIT_TEST_SOURCES test_sys_env_var.c test_conf_add_kvp.c)
 set(INTEGRATION_TEST_SOURCES test_integration.c)
 
 foreach(test_src ${UNIT_TEST_SOURCES})

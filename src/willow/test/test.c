@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdarg.h>
 #include <willow/test/test.h>
 
 wil_test_state_t wil_test_state = WIL_TEST_STATE_NOT_TESTING;

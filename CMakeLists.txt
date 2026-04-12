@@ -10,7 +10,7 @@ add_library(willow)
 
 target_sources(
   willow
-  PRIVATE src/willow/sys/env.c src/willow/err/err.c src/willow/test/test.c
+  PRIVATE src/willow/sys/env.c src/willow/err/err.c src/willow/test/test.c src/willow/conf/config.c src/willow/willow.c
   PUBLIC FILE_SET
          HEADERS
          BASE_DIRS

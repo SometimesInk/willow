@@ -19,18 +19,35 @@ extern wil_test_state_t wil_test_state;
 extern void wil_test_start();
 extern void wil_test_stop();
 
+#define WIL_TEST_RETURN(v) return v;
+
 #define WIL_TEST_STOP_SUCC()                                                   \
   do {                                                                         \
     wil_test_stop();                                                           \
-    return WIL_TEST_SUCC;                                                      \
+    WIL_TEST_RETURN(WIL_TEST_SUCC)                                             \
   } while (0)
 
 #define WIL_TEST_ASSERT(expr)                                                  \
   do {                                                                         \
     if (!(expr)) {                                                             \
       wil_test_stop();                                                         \
-      return WIL_TEST_FAIL;                                                    \
+      WIL_TEST_RETURN(WIL_TEST_FAIL)                                           \
     }                                                                          \
+  } while (0)
+
+#define WIL_TEST_ASSERT_PREV_ERR(code)                                         \
+  do {                                                                         \
+    WIL_TEST_ASSERT(wil_err_get() == code);                                    \
+  } while (0)
+
+#define WIL_TEST_ASSERT_PREV_ERR_NOT(code)                                     \
+  do {                                                                         \
+    WIL_TEST_ASSERT(wil_err_get() != code);                                    \
+  } while (0)
+
+#define WIL_TEST_ASSERT_SUCC(expr)                                             \
+  do {                                                                         \
+    WIL_TEST_ASSERT(expr == WIL_SUCC);                                         \
   } while (0)
 
 #endif /* WILLOW__TEST_TEST_H__ */
