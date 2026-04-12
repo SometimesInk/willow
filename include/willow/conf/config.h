@@ -11,18 +11,12 @@ typedef struct {
 typedef struct {
   wil_size_t len_kvp;
   wil_conf_kvp_t kvp[];
-} wil_conf_context;
+} wil_conf_context_t;
 
-extern wil_conf_context wil_conf_get_context();
+extern wil_conf_context_t wil_conf_context;
 
 extern wil_out_t wil_conf_add_kvp(wil_str_t name, wil_str_t def);
 
-/**
- * @warning Unsafe macro.
- */
-#define wil_conf_add_kvp_cptr(name, def)                                       \
-  do {                                                                         \
-    wil_conf_add_kvp({sizeof(name) - 1, name}, {sizeof(def) - 1, def})         \
-  } while (0)
+extern void wil_conf_dispose();
 
 #endif /* WILLOW__CONF_CONFIG_H__ */
