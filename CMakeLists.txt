@@ -1,27 +1,29 @@
 cmake_minimum_required(VERSION 3.23)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 project(
   willow
   VERSION 0.0.0
   LANGUAGES C)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+find_package(camellia REQUIRED)
 
 add_library(willow)
 
+target_link_libraries(willow PUBLIC camellia::camellia)
+
 target_sources(
   willow
-  PRIVATE src/willow/sys/env.c src/willow/err/err.c src/willow/test/test.c src/willow/conf/config.c src/willow/willow.c
+  PRIVATE src/willow/sys/env.c src/willow/conf/config.c
   PUBLIC FILE_SET
          HEADERS
          BASE_DIRS
          include
          FILES
          include/willow/conf/config.h
-         include/willow/err/err.h
-         include/willow/err/err_codes.inc
          include/willow/io/io.h
-         include/willow/sys/env.h
-         include/willow/willow.h)
+         include/willow/sys/env.h)
 
 target_include_directories(
   willow

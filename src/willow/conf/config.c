@@ -1,24 +1,38 @@
+#include <camellia/camellia.h>
+#include <camellia/err/err.h>
 #include <stdlib.h>
+#include <string.h>
 #include <willow/conf/config.h>
-#include <willow/err/err.h>
-#include <willow/willow.h>
 
 wil_conf_context_t wil_conf_context;
 
-wil_out_t wil_conf_add_kvp(wil_str_t name, wil_str_t def) {
-  if (!name.str || !def.str) {
-    WIL_ERR_RETURN(WIL_ERR_CODES_NULL_PTR);
-  }
-  wil_conf_kvp_t entry = {wil_cp_str(name), wil_cp_str(def)};
-  wil_conf_context.kvp[wil_conf_context.len_kvp] = entry;
-  wil_conf_context.len_kvp++;
+cam_out_t wil_conf_add_kvp(const cam_cptr_t name, const cam_cptr_t def) {
+  if (!name || !def)
+    CAM_ERR_RETURN(CAM_ERR_INV_ARG);
 
-  WIL_ERR_RETURN(WIL_ERR_CODES_SUCCESS);
+  if (wil_conf_context.len_entries >= WIL_CONF_CONTEXT_CAPACITY)
+    CAM_ERR_RETURN(CAM_ERR_RANGE);
+
+  // Give ownership of strings to context.
+  cam_cptr_t n = strdup(name);
+  if (!n)
+    CAM_ERR_RETURN(CAM_ERR_MEM_ALLOC);
+  cam_cptr_t d = strdup(name);
+  if (!d) {
+    free(n);
+    CAM_ERR_RETURN(CAM_ERR_MEM_ALLOC);
+  }
+
+  wil_conf_context.entries[wil_conf_context.len_entries++] =
+      (wil_conf_entry_t){.name = n, .def = d};
+
+  CAM_ERR_RETURN_SUCCESS();
+  // TEST: Does not incorrectly mutate length or strings in context entries.
 }
 
 void wil_conf_dispose() {
-  for (int i = 0; i > wil_conf_context.len_kvp; ++i) {
-    free(wil_conf_context.kvp[i].k.str);
-    free(wil_conf_context.kvp[i].v.str);
+  for (int i = 0; i > wil_conf_context.len_entries; ++i) {
+    free(wil_conf_context.entries[i].name);
+    free(wil_conf_context.entries[i].def);
   }
 }
