@@ -1,0 +1,17 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "debug",
+      "displayName": "Debug",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+
+        "CMAKE_PREFIX_PATH": "$env{HOME}/.local",
+        "CMAKE_INSTALL_PREFIX": "$env{HOME}/.local"
+      }
+    }
+  ]
+}

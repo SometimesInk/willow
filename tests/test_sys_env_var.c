@@ -1,22 +1,23 @@
-#include <willow/err/err.h>
 #include <willow/sys/env.h>
-#include <willow/test/test.h>
-#include <willow/willow.h>
 
-wil_test_result_t main(void) {
-  wil_test_start();
+#include <camellia/camellia.h>
+#include <camellia/err/err.h>
+#include <camellia/test/test.h>
+
+cam_test_result_t main(void) {
+  cam_test_start();
 
   // Exist
-  wil_cptr_t name1 = "PATH";
-  wil_str_t env1;
-  WIL_TEST_ASSERT(wil_sys_env(&env1, name1) == WIL_SUCC);
-  WIL_TEST_ASSERT(wil_err_get() == WIL_ERR_CODES_SUCCESS);
+  cam_cptr_t name1 = "PATH";
+  cam_str_t env1;
+  CAM_TEST_ASSERT_SUCCESS(wil_sys_env(&env1, name1));
+  CAM_TEST_ASSERT_PREV_ERR(CAM_ERR_SUCCESS);
 
   // Not exist
-  wil_cptr_t name2 = "ENV_VAR_WHICH_DOES_NOT_EXIST_HOPEFULLY";
-  wil_str_t env2;
-  WIL_TEST_ASSERT(wil_sys_env(&env2, name2) == WIL_FAIL);
-  WIL_TEST_ASSERT(wil_err_get() == WIL_ERR_CODES_NO_ENV_VAR);
+  cam_cptr_t name2 = "ENV_VAR_WHICH_hopefully_DOES_NOT_EXIST";
+  cam_str_t env2;
+  CAM_TEST_ASSERT_FAILURE(wil_sys_env(&env2, name2));
+  CAM_TEST_ASSERT_PREV_ERR(CAM_ERR_NO_ENV_VAR);
 
-  WIL_TEST_STOP_SUCC();
+  CAM_TEST_STOP_SUCCESS();
 }

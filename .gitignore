@@ -2,6 +2,9 @@
 *.ink.json
 .cache/
 
+# Built libraries
+lib/camellia/
+
 # Build files
 build/
 

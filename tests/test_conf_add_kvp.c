@@ -1,36 +1,37 @@
+#include <camellia/err/err.h>
+#include <camellia/test/test.h>
 #include <stdio.h>
-#include <string.h>
 #include <willow/conf/config.h>
-#include <willow/err/err.h>
-#include <willow/test/test.h>
-#include <willow/willow.h>
 
-#undef WIL_TEST_RETURN
-#define WIL_TEST_RETURN(v)                                                     \
+#undef CAM_TEST_RETURN
+#define CAM_TEST_RETURN(v)                                                     \
   do {                                                                         \
     wil_conf_dispose();                                                        \
     return v;                                                                  \
   } while (0);
 
-wil_test_result_t main(void) {
-  wil_test_start();
+cam_test_result_t main(void) {
+  cam_test_start();
 
-  wil_str_t name = wil_create_str("KEY");
-  wil_str_t def = wil_create_str("DEF_VALUE");
+  cam_cptr_t name = "KEY";
+  printf("name.str %s\n", name);
+  cam_cptr_t def = "DEF_VALUE";
+  printf("def.str %s\n", def);
 
-  WIL_TEST_ASSERT_SUCC(wil_conf_add_kvp(name, def));
-  WIL_TEST_ASSERT(wil_conf_context.len_kvp > 0);
-  WIL_TEST_ASSERT_PREV_ERR_NOT(WIL_ERR_CODES_NULL_PTR);
+  CAM_TEST_ASSERT_SUCCESS(wil_conf_add_kvp(name, def));
+  CAM_TEST_ASSERT_PREV_ERR_NOT(CAM_ERR_INV_ARG);
+  CAM_TEST_ASSERT_PREV_ERR_NOT(CAM_ERR_NULL_PTR);
+  CAM_TEST_ASSERT(wil_conf_context.len_entries > 0);
 
-  printf("kvp[0].k.str %s\n", wil_conf_context.kvp[0].k.str);
-  printf("kvp[0].k.len %lu\n", wil_conf_context.kvp[0].k.len);
-  printf("kvp[0].v.str %s\n", wil_conf_context.kvp[0].v.str);
-  printf("kvp[0].v.len %lu\n", wil_conf_context.kvp[0].v.len);
+  // TEST: This line here is the point of failure. There is a seg fault likely
+  // due to accessing a null pointer. Check for null in `wil_conf_add_kvp()` and
+  // before this.
+  printf("entries[0].name %s\n", wil_conf_context.entries[0].name);
 
-  WIL_TEST_ASSERT(strcmp(wil_conf_context.kvp[0].k.str, name.str) == 0);
-  WIL_TEST_ASSERT(wil_conf_context.kvp[0].k.len == name.len);
-  WIL_TEST_ASSERT(strcmp(wil_conf_context.kvp[0].v.str, def.str) == 0);
-  WIL_TEST_ASSERT(wil_conf_context.kvp[0].v.len == def.len);
+  CAM_TEST_ASSERT(strcmp(wil_conf_context.entries[0].name, name) == 0);
 
-  WIL_TEST_STOP_SUCC();
+  printf("entries[0].def %s\n", wil_conf_context.entries[0].def);
+  CAM_TEST_ASSERT(strcmp(wil_conf_context.entries[0].def, def) == 0);
+
+  CAM_TEST_STOP_SUCCESS();
 }
