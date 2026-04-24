@@ -15,7 +15,7 @@ target_link_libraries(willow PUBLIC camellia::camellia)
 
 target_sources(
   willow
-  PRIVATE src/willow/sys/env.c src/willow/conf/config.c
+  PRIVATE src/willow/sys/env.c src/willow/conf/config.c src/willow/io/io.c
   PUBLIC FILE_SET
          HEADERS
          BASE_DIRS
