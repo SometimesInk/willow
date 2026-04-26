@@ -16,12 +16,14 @@ target_link_libraries(willow PUBLIC camellia::camellia)
 target_sources(
   willow
   PRIVATE src/willow/sys/env.c src/willow/conf/config.c src/willow/io/io.c
+          src/willow/conf/parser.c
   PUBLIC FILE_SET
          HEADERS
          BASE_DIRS
          include
          FILES
          include/willow/conf/config.h
+         include/willow/conf/parser.h
          include/willow/io/io.h
          include/willow/sys/env.h)
 

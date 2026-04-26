@@ -33,8 +33,8 @@ cam_out_t wil_conf_add_kvp(const cam_cptr_t name, const cam_cptr_t def) {
   wil_conf_context.entries[wil_conf_context.len_entries++] =
       (wil_conf_entry_t){.name = entry_name,
                          .name_len = len_name - 1,
-                         .def = entry_def,
-                         .def_len = len_def - 1};
+                         .value = entry_def,
+                         .value_len = len_def - 1};
 
   CAM_ERR_RETURN_SUCCESS();
 }
@@ -42,7 +42,7 @@ cam_out_t wil_conf_add_kvp(const cam_cptr_t name, const cam_cptr_t def) {
 void wil_conf_dispose() {
   for (int i = 0; i > wil_conf_context.len_entries; ++i) {
     free(wil_conf_context.entries[i].name);
-    free(wil_conf_context.entries[i].def);
+    free(wil_conf_context.entries[i].value);
   }
   wil_conf_context.len_entries = 0;
 }
