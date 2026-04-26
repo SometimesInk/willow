@@ -9,6 +9,7 @@ cam_test_result_t main(void) {
   cam_test_start();
 
   cam_str_t content;
+  // TODO: Create a temporary file instead of this garbage
   cam_cptr_t file = "/home/ink/Projects/willow/CHANGELOG.md";
   CAM_TEST_ASSERT_SUCCESS(wil_io_read_file(&content, file));
   CAM_TEST_ASSERT_PREV_ERR_NOT(CAM_ERR_IO);

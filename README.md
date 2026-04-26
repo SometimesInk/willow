@@ -35,3 +35,28 @@ willow/
 ├── conf/ # Setup for the library
 └── willow.h # Type definitions
 ```
+
+## Using the Willow Configuration Language (WCL)
+
+Files using the Willow Configuration Language (WCL) end with the `.wcl` extension.
+
+Here is a short code sample written using the `WCL`:
+```wcl
+__WIL_VERSION = "1.0.0";
+
+NUMBER_OF_ROWS = 2;
+
+_user_name = env("USER");
+
+if (_user_name == "me") {
+  NUMBER_OF_ROWS = 5;
+}
+```
+
+### Naming convention
+
+Willow configuration entries are in fullcaps with a preceeding double underscore (`__`).
+
+Configuration entries for the program to be configured are in fullcaps (and should be preceeded with an abbreviation of the program name).
+
+Local variables in the WCL code should be lowercase with a preeceeding underscore (`_`).
