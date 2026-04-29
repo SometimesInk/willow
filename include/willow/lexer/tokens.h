@@ -2,6 +2,9 @@
 #define WILLOW__LEXER_TOKENS_H__
 
 #include <camellia/camellia.h>
+#include <camellia/type/dynamic_array.h>
+#include <willow/lexer/lexer.h>
+
 typedef enum {
 #define X(token) token,
 #include <willow/lexer/token_definitions.inc>
@@ -14,12 +17,11 @@ typedef enum {
 
 typedef struct {
   wil_lexer_token_type_t type;
-  cam_cptr_t lexeme;
-  cam_cptr_t literal;
+  cam_str_t lexeme;
+  // cam_cptr_t literal;
   cam_int_t line;
 } wil_lexer_token_t;
 
-// TODO: Continue from `Regular Language and Expressions 4.3`
-// https://craftinginterpreters.com/scanning.html#regular-languages-and-expressions
-
+extern cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
+                                          cam_type_dyn_arr_t *arr);
 #endif /* WILLOW__LEXER_TOKENS_H__ */
