@@ -47,15 +47,15 @@ void wil_conf_dispose() {
   wil_conf_context.len_entries = 0;
 }
 
-// TODO: TEST
+// TODO: TEST,
 cam_out_t wil_conf_init(const cam_cptr_t path) {
   CAM_ERR_CHECK(wil_conf_context.len_entries != 0, CAM_ERR_NOT_ENOUGH_ARGS);
 
   cam_str_t file_content;
   if (wil_io_read_file(&file_content, path) == CAM_FAILURE)
     return CAM_FAILURE;
-  if (wil_conf_parse(file_content))
-    return CAM_FAILURE;
+  // if (wil_conf_parse(file_content))
+  //   return CAM_FAILURE;
 
   CAM_ERR_RETURN_SUCCESS();
 }

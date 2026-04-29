@@ -15,8 +15,13 @@ target_link_libraries(willow PUBLIC camellia::camellia)
 
 target_sources(
   willow
-  PRIVATE src/willow/sys/env.c src/willow/conf/config.c src/willow/io/io.c
+  PRIVATE src/willow/sys/env.c
+          src/willow/conf/config.c
+          src/willow/io/io.c
           src/willow/conf/parser.c
+          src/willow/lexer/lexer.c
+          src/willow/lexer/lexer_utils.c
+          src/willow/lexer/tokens.c
   PUBLIC FILE_SET
          HEADERS
          BASE_DIRS
@@ -24,6 +29,10 @@ target_sources(
          FILES
          include/willow/conf/config.h
          include/willow/conf/parser.h
+         include/willow/lexer/lexer.h
+         include/willow/lexer/lexer_utils.h
+         include/willow/lexer/tokens.h
+         include/willow/lexer/token_definitions.inc
          include/willow/io/io.h
          include/willow/sys/env.h)
 
