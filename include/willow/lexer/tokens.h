@@ -15,10 +15,15 @@ typedef enum {
   WIL_LEXER_TOKEN_LEN,
 } wil_lexer_token_type_t;
 
+typedef union {
+  cam_str_t string;
+  cam_int_t integer;
+} wil_lexer_literal_t;
+
 typedef struct {
   wil_lexer_token_type_t type;
   cam_str_t lexeme;
-  // cam_cptr_t literal;
+  wil_lexer_literal_t literal;
   cam_int_t line;
 } wil_lexer_token_t;
 

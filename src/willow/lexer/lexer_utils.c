@@ -62,3 +62,18 @@ cam_out_t wil_lexer_add_token(wil_lexer_context_t *context,
   CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(context->tokens, &token));
   CAM_ERR_RETURN_SUCCESS();
 }
+
+cam_out_t wil_lexer_add_token_literal(wil_lexer_context_t *context,
+                                      const wil_lexer_token_type_t type,
+                                      const wil_lexer_literal_t literal) {
+  wil_lexer_token_t token = {
+      .type = type,
+      .lexeme = {.str = context->start,
+                 .len = context->current - context->start},
+      .literal = literal,
+      .line = context->line,
+  };
+
+  CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(context->tokens, &token));
+  CAM_ERR_RETURN_SUCCESS();
+}
