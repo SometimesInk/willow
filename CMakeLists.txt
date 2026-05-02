@@ -22,6 +22,7 @@ target_sources(
           src/willow/lexer/lexer.c
           src/willow/lexer/lexer_utils.c
           src/willow/lexer/tokens.c
+          src/willow/lexer/string_lexer.c
   PUBLIC FILE_SET
          HEADERS
          BASE_DIRS
@@ -33,6 +34,7 @@ target_sources(
          include/willow/lexer/lexer_utils.h
          include/willow/lexer/tokens.h
          include/willow/lexer/token_definitions.inc
+         include/willow/lexer/string_lexer.h
          include/willow/io/io.h
          include/willow/sys/env.h)
 

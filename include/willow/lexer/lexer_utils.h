@@ -27,4 +27,9 @@ extern cam_out_t wil_lexer_add_token_simple(wil_lexer_context_t *context,
 extern cam_out_t wil_lexer_add_token(wil_lexer_context_t *context,
                                      const wil_lexer_token_type_t type);
 
+// TODO: TEST
+extern cam_out_t wil_lexer_add_token_literal(wil_lexer_context_t *context,
+                                             const wil_lexer_token_type_t type,
+                                             const wil_lexer_literal_t literal);
+
 #endif /* WILLOW__LEXER_LEXER_UTILS_H__ */
