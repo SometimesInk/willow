@@ -10,7 +10,7 @@ wil_lexer_context_t wil_lexer_create_context(cam_cptr_t source) {
   wil_lexer_context_t buf = {
       .err_count = 0,
       .source = source,
-      .tokens = CAM_NULL,
+      .tokens = {0},
 
       .line = 1,
       .start = source,

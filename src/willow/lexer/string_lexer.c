@@ -1,8 +1,8 @@
-#include "willow/lexer/tokens.h"
 #include <camellia/camellia.h>
 #include <camellia/type/string.h>
 #include <willow/lexer/lexer_utils.h>
 #include <willow/lexer/string_lexer.h>
+#include <willow/lexer/tokens.h>
 
 void wil_lexer_string_literal(wil_lexer_context_t *context) {
   while (wil_lexer_peek(context) != '"' && !wil_lexer_is_at_end(context)) {

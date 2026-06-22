@@ -3,6 +3,7 @@
 
 #include <camellia/camellia.h>
 
+// Use dynamic array
 #define WIL_CONF_CONTEXT_CAPACITY 512
 
 typedef struct {

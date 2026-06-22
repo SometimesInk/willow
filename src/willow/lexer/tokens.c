@@ -80,7 +80,6 @@ cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
     wil_lexer_string_literal(context);
     break;
   default:
-    // TODO: Use an enum for these errors
     wil_lexer_err(context, "Invalid character.");
     break;
   }

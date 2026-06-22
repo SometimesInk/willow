@@ -4,6 +4,13 @@
 #include <stdio.h>
 #include <willow/conf/config.h>
 
+#undef CAM_TEST_RETURN
+#define CAM_TEST_RETURN(v)                                                     \
+  do {                                                                         \
+    wil_conf_dispose();                                                        \
+    return v;                                                                  \
+  } while (0)
+
 cam_test_result_t main(void) {
   cam_test_start();
 

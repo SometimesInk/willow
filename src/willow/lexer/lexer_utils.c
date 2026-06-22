@@ -46,7 +46,7 @@ cam_out_t wil_lexer_add_token_simple(wil_lexer_context_t *context,
       .line = context->line,
   };
 
-  CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(context->tokens, &token));
+  CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(&context->tokens, &token));
   CAM_ERR_RETURN_SUCCESS();
 }
 
@@ -59,7 +59,7 @@ cam_out_t wil_lexer_add_token(wil_lexer_context_t *context,
       .line = context->line,
   };
 
-  CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(context->tokens, &token));
+  CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(&context->tokens, &token));
   CAM_ERR_RETURN_SUCCESS();
 }
 
@@ -74,6 +74,6 @@ cam_out_t wil_lexer_add_token_literal(wil_lexer_context_t *context,
       .line = context->line,
   };
 
-  CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(context->tokens, &token));
+  CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(&context->tokens, &token));
   CAM_ERR_RETURN_SUCCESS();
 }

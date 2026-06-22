@@ -10,7 +10,7 @@ typedef struct {
    */
   cam_int_t err_count;
   cam_cptr_t source;
-  cam_type_dyn_arr_t *tokens;
+  cam_type_dyn_arr_t tokens;
 
   // Position
   cam_int_t line;
