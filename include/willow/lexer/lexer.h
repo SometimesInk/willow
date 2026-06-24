@@ -14,11 +14,19 @@ typedef struct {
 
   // Position
   cam_int_t line;
+  /**
+   * @brief Start of next token.
+   */
   cam_cptr_t start;
+  /**
+   * @brief Current cursor position.
+   */
   cam_cptr_t current;
 } wil_lexer_context_t;
 
 extern wil_lexer_context_t wil_lexer_create_context(cam_cptr_t source);
+
+extern void wil_lexer_dispose_context(wil_lexer_context_t *context);
 
 extern cam_out_t wil_lexer_scan_tokens(wil_lexer_context_t *context,
                                        cam_type_dyn_arr_t *arr);

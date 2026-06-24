@@ -1,7 +1,13 @@
 set(UNIT_TEST_SOURCES
-    test_sys_env_var.c test_conf_add_kvp.c test_conf_dispose.c
-    test_lexer_is_at_end.c test_lexer_advance_and_peek_and_match.c
-    test_lexer_add_token_simple.c)
+    test_sys_env_var.c
+    test_conf_add_kvp.c
+    test_conf_dispose.c
+    test_lexer_is_at_end.c
+    test_lexer_advance_and_peek_and_match.c
+    test_lexer_add_token_simple.c
+    test_lexer_match_i.c
+    test_lexer_string_literal.c
+    test_lexer_add_token.c)
 set(INTEGRATION_TEST_SOURCES test_io_read_file.c)
 
 foreach(test_src ${UNIT_TEST_SOURCES})

@@ -38,6 +38,18 @@ cam_int_t wil_lexer_match(wil_lexer_context_t *context, char expected) {
   return CAM_TRUE;
 }
 
+cam_int_t wil_lexer_match_i(wil_lexer_context_t *context, char expected) {
+  if (wil_lexer_is_at_end(context))
+    return CAM_FALSE;
+  char c = context->current[0];
+  if (c == expected)
+    return CAM_TRUE;
+
+  // Advance
+  context->current++;
+  return CAM_FALSE;
+}
+
 cam_out_t wil_lexer_add_token_simple(wil_lexer_context_t *context,
                                      const wil_lexer_token_type_t type) {
   wil_lexer_token_t token = {

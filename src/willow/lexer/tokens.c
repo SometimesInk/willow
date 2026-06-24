@@ -1,4 +1,5 @@
 #include <camellia/err/err.h>
+#include <stdio.h>
 #include <willow/lexer/lexer_utils.h>
 #include <willow/lexer/string_lexer.h>
 #include <willow/lexer/tokens.h>
@@ -85,4 +86,23 @@ cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
   }
 
   CAM_ERR_RETURN_SUCCESS();
+}
+
+void wil_lexer_token_dump_none(const wil_lexer_token_t *token) {
+  printf("Token Dump:\n");
+  printf("->Type: %d\n", token->type);
+  printf("->Lexeme Len: %zu\n", token->lexeme.len);
+  printf("->Lexeme Str: %s\n", token->lexeme.str);
+  printf("->Line: %d\n", token->line);
+}
+
+void wil_lexer_token_dump_str(const wil_lexer_token_t *token) {
+  wil_lexer_token_dump_none(token);
+  printf("->Literal Len: %zu\n", token->literal.string.len);
+  printf("->Literal Str: %s\n", token->literal.string.str);
+}
+
+void wil_lexer_token_dump_int(const wil_lexer_token_t *token) {
+  wil_lexer_token_dump_none(token);
+  printf("->Integer: %d\n", token->literal.integer);
 }

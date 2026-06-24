@@ -20,13 +20,32 @@ typedef union {
   cam_int_t integer;
 } wil_lexer_literal_t;
 
+#define WIL_LEXER_TOKEN_INI_LEN 8
+
 typedef struct {
   wil_lexer_token_type_t type;
   cam_str_t lexeme;
-  wil_lexer_literal_t literal;
   cam_int_t line;
+  /**
+   * @warn If `type == WIL_LEXER_TOKEN_STRING`, then
+   * `literal.string.str` is owned by this token and will be released
+   * by `wil_lexer_dispose_context()` using `free(3)`.
+   *
+   * Therefore, `literal.string.str` must either be NULL or point to
+   * memory that may legally be passed to `free(3)`. Borrowed pointers,
+   * string literals, and pointers into the source buffer are invalid.
+   */
+  wil_lexer_literal_t literal;
+  ;
 } wil_lexer_token_t;
 
 extern cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
                                           cam_type_dyn_arr_t *arr);
+
+extern void wil_lexer_token_dump_none(const wil_lexer_token_t *token);
+
+extern void wil_lexer_token_dump_str(const wil_lexer_token_t *token);
+
+extern void wil_lexer_token_dump_int(const wil_lexer_token_t *token);
+
 #endif /* WILLOW__LEXER_TOKENS_H__ */

@@ -1,7 +1,7 @@
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/type/dynamic_array.h>
-#include <threads.h>
+#include <stdlib.h>
 #include <willow/lexer/lexer.h>
 #include <willow/lexer/lexer_utils.h>
 #include <willow/lexer/tokens.h>
@@ -20,10 +20,30 @@ wil_lexer_context_t wil_lexer_create_context(cam_cptr_t source) {
   return buf;
 }
 
+void wil_lexer_dispose_context(wil_lexer_context_t *context) {
+  if (context == (wil_lexer_context_t *)CAM_NULL)
+    return;
+  if (&context->tokens == (cam_type_dyn_arr_t *)CAM_NULL)
+    return;
+
+  // Free strings from tokens
+  for (size_t i = 0; i < cam_type_len_dyn_arr(&context->tokens); i++) {
+    wil_lexer_token_t *token =
+        (wil_lexer_token_t *)cam_type_get_dyn_arr(&context->tokens, i);
+
+    if (token->type == WIL_LEXER_TOKEN_STRING)
+      free(token->literal.string.str);
+  }
+
+  // Free dynamic array
+  cam_type_free_dyn_arr(&context->tokens);
+}
+
 cam_out_t wil_lexer_scan_tokens(wil_lexer_context_t *context,
                                 cam_type_dyn_arr_t *arr) {
   // Initialize dynamic array
-  cam_type_create_dyn_arr(arr, sizeof(wil_lexer_token_t), 8);
+  cam_type_create_dyn_arr(arr, sizeof(wil_lexer_token_t),
+                          WIL_LEXER_TOKEN_INI_LEN);
 
   while (!wil_lexer_is_at_end(context)) {
     context->start = context->current;

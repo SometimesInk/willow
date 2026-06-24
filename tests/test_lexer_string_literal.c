@@ -1,7 +1,9 @@
+#include "willow/lexer/string_lexer.h"
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/test/test.h>
 #include <camellia/type/dynamic_array.h>
+#include <camellia/type/string.h>
 #include <stdio.h>
 #include <string.h>
 #include <willow/io/io.h>
@@ -24,28 +26,32 @@ cam_test_result_t main(void) {
   printf("Starting test.\n");
 
   // Create context
-  cam_cptr_t source = "__WIL_VERSION = \"1.0.0\"\n";
+  cam_cptr_t source = "\"willow\"";
   context = wil_lexer_create_context(source);
   CAM_TEST_ASSERT_NOT_NULL(context.source);
   CAM_TEST_ASSERT_NOT_NULL(context.current);
   CAM_TEST_ASSERT_NOT_NULL(context.start);
-
-  printf("Creating dynamic array.\n");
 
   // Create tokens dynamic array
   CAM_TEST_ASSERT_SUCCESS(cam_type_create_dyn_arr(
       &context.tokens, sizeof(wil_lexer_token_t), WIL_LEXER_TOKEN_INI_LEN));
   CAM_TEST_ASSERT_PREV_ERR_NOT(CAM_ERR_MEM_ALLOC);
 
-  printf("Created dynamic array.\n");
+  // Advance to mimic scanner
+  context.current++;
 
-  // Add token
-  CAM_TEST_ASSERT_SUCCESS(
-      wil_lexer_add_token_simple(&context, WIL_LEXER_TOKEN_DOT));
+  wil_lexer_string_literal(&context);
   CAM_TEST_ASSERT(cam_type_len_dyn_arr(&context.tokens) == 1);
+
+  // Checks
   wil_lexer_token_t *token = cam_type_get_dyn_arr(&context.tokens, 0);
-  CAM_TEST_ASSERT_NOT_NULL(token);
-  CAM_TEST_ASSERT(token->type == WIL_LEXER_TOKEN_DOT);
+  wil_lexer_token_dump_str(token);
+  CAM_TEST_ASSERT(token->type == WIL_LEXER_TOKEN_STRING);
+  CAM_TEST_ASSERT(token->literal.string.len == 6);
+  CAM_TEST_ASSERT_SUCCESS(
+      cam_type_str_match(token->literal.string.str, "willow", 6));
+  CAM_TEST_ASSERT(token->lexeme.str == source);
+  CAM_TEST_ASSERT(token->lexeme.len == 8);
 
   CAM_TEST_STOP_SUCCESS();
 }
