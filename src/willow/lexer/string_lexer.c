@@ -21,6 +21,8 @@ void wil_lexer_string_literal(wil_lexer_context_t *context) {
 
   cam_str_t literal;
 
+  // TODO: When creating the literal, here is where to parse escape sequences.
+
   // -2 for both quotations, -1 to compensate for the previous advance
   cam_size_t end = (cam_size_t)(context->current - context->start - 2 - 1);
   cam_type_substring(&literal, context->start + 1, 0, end);

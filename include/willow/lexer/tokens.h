@@ -18,6 +18,7 @@ typedef enum {
 typedef union {
   cam_str_t string;
   cam_int_t integer;
+  float decimal;
 } wil_lexer_literal_t;
 
 #define WIL_LEXER_TOKEN_INI_LEN 8
