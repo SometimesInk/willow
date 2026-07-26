@@ -2,6 +2,7 @@
 #include <camellia/err/err.h>
 #include <camellia/type/dynamic_array.h>
 #include <stdio.h>
+#include <string.h>
 #include <willow/lexer/lexer.h>
 #include <willow/lexer/lexer_utils.h>
 #include <willow/lexer/tokens.h>
@@ -24,6 +25,16 @@ char wil_lexer_advance(wil_lexer_context_t *context) {
 char wil_lexer_peek(wil_lexer_context_t *context) {
   char c = context->current[0];
   return c;
+}
+
+char wil_lexer_peek_next(wil_lexer_context_t *context) {
+  context->current++;
+  if (wil_lexer_is_at_end(context)) {
+    context->current--;
+    return '\0';
+  }
+  context->current--;
+  return context->current[1];
 }
 
 cam_int_t wil_lexer_match(wil_lexer_context_t *context, char expected) {
@@ -89,3 +100,7 @@ cam_out_t wil_lexer_add_token_literal(wil_lexer_context_t *context,
   CAM_ERR_FAIL_ON_FAIL(cam_type_push_dyn_arr(&context->tokens, &token));
   CAM_ERR_RETURN_SUCCESS();
 }
+
+// Allow me to record a funny error (I can only call it funny because it took me
+// merely an hour to uncover): forgot to write the single quotes....
+cam_out_t wil_lexer_is_digit(char c) { return '0' <= c && c <= '9'; }

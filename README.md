@@ -6,7 +6,7 @@ Config library in C. This is, above all, a personnal project to be used in other
 
 File structure. (Mostly reference for myself)
 
-```
+```sh
 willow/
 ├── src/
 │   ├── willow/
@@ -26,32 +26,33 @@ willow/
 
 Module structure.
 
-```
+```sh
 willow/
-├── sys/ # Private utils package for system functions
-├── io/ # Private utils package
-├── test/ # Private utils package
-├── err/ # Error management for the library
 ├── conf/ # Setup for the library
+├── io/ # Private utils package
+├── lexer/ # Package for lexical analysis
+├── sys/ # Private utils package for system functions
 └── willow.h # Type definitions
 ```
 
-## Using the Willow Configuration Language (WCL)
+## The Willow Configuration Language (WCL)
 
 Files using the Willow Configuration Language (WCL) end with the `.wcl` extension.
 
-Here is a short code sample written using the `WCL`:
-```wcl
-__WIL_VERSION = "1.0.0";
+Here is a code sample written using `WCL`:
+```c
+string __WIL_VERSION = "1.0.0";
 
-NUMBER_OF_ROWS = 2;
+int NUMBER_OF_ROWS = 2;
 
-_user_name = env("USER");
+string _user_name = env("USER");
 
 if (_user_name == "me") {
   NUMBER_OF_ROWS = 5;
 }
 ```
+
+The syntax and philosophy is based on C.
 
 ### Naming convention
 
@@ -60,3 +61,10 @@ Willow configuration entries are in fullcaps with a preceeding double underscore
 Configuration entries for the program to be configured are in fullcaps (and should be preceeded with an abbreviation of the program name).
 
 Local variables in the WCL code should be lowercase with a preeceeding underscore (`_`).
+
+## Cherries
+
+Cherries are the extra features I want when this is done. Things that will make me smile (〃＾▽＾〃)
+
+- Support for radices: hex, bin, oct (keep the 0 prefix? idk)
+- Support for escape sequences in strings

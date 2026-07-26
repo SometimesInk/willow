@@ -1,8 +1,7 @@
 #include <camellia/camellia.h>
 #include <camellia/type/string.h>
-#include <stdio.h>
 #include <willow/lexer/lexer_utils.h>
-#include <willow/lexer/string_lexer.h>
+#include <willow/lexer/literal_string_lexer.h>
 #include <willow/lexer/tokens.h>
 
 void wil_lexer_string_literal(wil_lexer_context_t *context) {

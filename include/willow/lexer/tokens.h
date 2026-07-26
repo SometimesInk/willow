@@ -49,4 +49,6 @@ extern void wil_lexer_token_dump_str(const wil_lexer_token_t *token);
 
 extern void wil_lexer_token_dump_int(const wil_lexer_token_t *token);
 
+extern void wil_lexer_token_dump_dec(const wil_lexer_token_t *token);
+
 #endif /* WILLOW__LEXER_TOKENS_H__ */

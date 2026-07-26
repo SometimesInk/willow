@@ -9,6 +9,7 @@ typedef struct {
    * @brief Whether an error has occurred.
    */
   cam_int_t err_count;
+  // TODO: Cache length of source
   cam_cptr_t source;
   cam_type_dyn_arr_t tokens;
 

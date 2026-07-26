@@ -21,6 +21,12 @@ extern char wil_lexer_advance(wil_lexer_context_t *context);
  */
 extern char wil_lexer_peek(wil_lexer_context_t *context);
 
+// TODO: TEST
+/**
+ * @brief Returns the next character without advancing.
+ */
+extern char wil_lexer_peek_next(wil_lexer_context_t *context);
+
 /**
  * @brief Checks whether the current character matches the expected character,
  * if it does, it then advances.
@@ -41,9 +47,13 @@ extern cam_out_t wil_lexer_add_token_simple(wil_lexer_context_t *context,
 extern cam_out_t wil_lexer_add_token(wil_lexer_context_t *context,
                                      const wil_lexer_token_type_t type);
 
-// TODO: TEST
 extern cam_out_t wil_lexer_add_token_literal(wil_lexer_context_t *context,
                                              const wil_lexer_token_type_t type,
                                              const wil_lexer_literal_t literal);
+
+/**
+ * @brief Checks if the current character is a digit.
+ */
+extern cam_out_t wil_lexer_is_digit(char c);
 
 #endif /* WILLOW__LEXER_LEXER_UTILS_H__ */
