@@ -51,9 +51,20 @@ extern cam_out_t wil_lexer_add_token_literal(wil_lexer_context_t *context,
                                              const wil_lexer_token_type_t type,
                                              const wil_lexer_literal_t literal);
 
+// TODO: Move to camellia
 /**
  * @brief Checks if the current character is a digit.
  */
 extern cam_out_t wil_lexer_is_digit(char c);
+/**
+ * @brief Checks if the current character is a letter of the alphabet or an
+ * underscore.
+ */
+extern cam_out_t wil_lexer_is_alpha(char c);
+/**
+ * @brief Checks if the current character is alphanumeric. Includes the
+ * underscore.
+ */
+extern cam_out_t wil_lexer_is_alphanumeric(char c);
 
 #endif /* WILLOW__LEXER_LEXER_UTILS_H__ */

@@ -1,6 +1,8 @@
 #include <camellia/err/err.h>
 #include <stdio.h>
+#include <willow/lexer/identifier.h>
 #include <willow/lexer/lexer_utils.h>
+#include <willow/lexer/literal_integer_and_float_lexer.h>
 #include <willow/lexer/literal_string_lexer.h>
 #include <willow/lexer/tokens.h>
 
@@ -81,7 +83,13 @@ cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
     wil_lexer_string_literal(context);
     break;
   default:
-    wil_lexer_err(context, "Invalid character.");
+    if (wil_lexer_is_digit(c)) {
+      wil_lexer_integer_and_float_literal(context);
+    } else if (wil_lexer_is_alpha(c)) {
+      wil_lexer_identifier(context);
+    } else {
+      wil_lexer_err(context, "Invalid character.");
+    }
     break;
   }
 
