@@ -10,8 +10,10 @@ set(UNIT_TEST_SOURCES
     test_lexer_is_digit.c
     test_lexer_is_alpha.c
     test_lexer_is_alphanumeric.c
+    test_lexer_identifier.c
     test_lexer_match_i.c
     test_lexer_literal_string_lexer.c
+    test_lexer_scan_tokens.c
     test_lexer_literal_integer_and_float_lexer.c)
 set(INTEGRATION_TEST_SOURCES test_io_read_file.c)
 

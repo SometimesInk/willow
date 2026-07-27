@@ -41,21 +41,14 @@ void wil_lexer_dispose_context(wil_lexer_context_t *context) {
 
 cam_out_t wil_lexer_scan_tokens(wil_lexer_context_t *context,
                                 cam_type_dyn_arr_t *arr) {
-  // Initialize dynamic array
-  cam_type_create_dyn_arr(arr, sizeof(wil_lexer_token_t),
-                          WIL_LEXER_TOKEN_INI_LEN);
-
   while (!wil_lexer_is_at_end(context)) {
     context->start = context->current;
     if (wil_lexer_scan_one_token(context, arr) == CAM_FAILURE)
-      goto fail;
+      return CAM_FAILURE;
   }
 
   // Add EOF token
   if (wil_lexer_add_token_simple(context, WIL_LEXER_TOKEN_EOF) == CAM_FAILURE)
-    goto fail;
+    return CAM_FAILURE;
   CAM_ERR_RETURN_SUCCESS();
-fail:
-  cam_type_free_dyn_arr(arr);
-  return CAM_FAILURE;
 }

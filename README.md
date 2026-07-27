@@ -4,7 +4,7 @@ Config library in C. This is, above all, a personnal project to be used in other
 
 ## Structure
 
-File structure. (Mostly reference for myself)
+File structure. (Mostly reference for myself, I forget things)
 
 ```sh
 willow/
@@ -28,11 +28,11 @@ Module structure.
 
 ```sh
 willow/
-├── conf/ # Setup for the library
-├── io/ # Private utils package
-├── lexer/ # Package for lexical analysis
-├── sys/ # Private utils package for system functions
-└── willow.h # Type definitions
+├── conf/ # Configuration package
+├── lexer/ # Lexical analysis package
+├── ast/ # Syntactic analysis package using ASTs
+├── io/ #  System utils to be moved to camellia
+└── sys/ # idem
 ```
 
 ## The Willow Configuration Language (WCL)

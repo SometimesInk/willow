@@ -20,6 +20,7 @@ target_sources(
           src/willow/conf/config.c
           src/willow/conf/parser.c
           src/willow/lexer/lexer.c
+          src/willow/lexer/keyword.c
           src/willow/lexer/identifier.c
           src/willow/lexer/lexer_utils.c
           src/willow/lexer/tokens.c
@@ -34,6 +35,7 @@ target_sources(
          include/willow/lexer/lexer_utils.h
          include/willow/lexer/tokens.h
          include/willow/lexer/identifier.h
+         include/willow/lexer/keyword.h
          include/willow/lexer/literal_string_lexer.h
          include/willow/lexer/literal_integer_and_float_lexer.h
          include/willow/lexer/keyword_definitions.inc

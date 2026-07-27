@@ -1,7 +1,8 @@
-#include "willow/lexer/keyword.h"
-#include "willow/lexer/tokens.h"
+#include <stdio.h>
 #include <willow/lexer/identifier.h>
+#include <willow/lexer/keyword.h>
 #include <willow/lexer/lexer_utils.h>
+#include <willow/lexer/tokens.h>
 
 void wil_lexer_identifier(wil_lexer_context_t *context) {
   // Consume all alphanumeric characters in the identifier (which may be a
@@ -9,7 +10,8 @@ void wil_lexer_identifier(wil_lexer_context_t *context) {
   while (wil_lexer_is_alphanumeric(wil_lexer_peek(context)))
     wil_lexer_advance(context);
 
-  wil_lexer_token_type_t type = wil_lexer_identifier_is_keyword(context);
+  wil_lexer_token_type_t type;
+  type = wil_lexer_identifier_is_keyword(context);
 
   wil_lexer_add_token(context, type);
 }
