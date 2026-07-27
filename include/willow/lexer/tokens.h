@@ -6,8 +6,12 @@
 #include <willow/lexer/lexer.h>
 
 typedef enum {
+  WIL_LEXER_TOKEN_NONE,
 #define X(token) token,
 #include <willow/lexer/token_definitions.inc>
+#undef X
+#define X(token, string) token,
+#include <willow/lexer/keyword_definitions.inc>
 #undef X
   /**
    * @brief Length of `wil_lexer_token_t` enum.

@@ -45,13 +45,13 @@ cam_test_result_t main(void) {
 
   // Add token
   CAM_TEST_ASSERT_SUCCESS(
-      wil_lexer_add_token(&context, WIL_LEXER_TOKEN_RETURN));
+      wil_lexer_add_token(&context, WIL_LEXER_TOKEN_KW_RETURN));
   CAM_TEST_ASSERT(cam_type_len_dyn_arr(&context.tokens) == 1);
   wil_lexer_token_t *token = cam_type_get_dyn_arr(&context.tokens, 0);
 
   // Checks
   CAM_TEST_ASSERT_NOT_NULL(token);
-  CAM_TEST_ASSERT(token->type == WIL_LEXER_TOKEN_RETURN);
+  CAM_TEST_ASSERT(token->type == WIL_LEXER_TOKEN_KW_RETURN);
   CAM_TEST_ASSERT(token->lexeme.len = 6);
   CAM_TEST_ASSERT_SUCCESS(cam_type_str_match(token->lexeme.str, "return", 6));
 

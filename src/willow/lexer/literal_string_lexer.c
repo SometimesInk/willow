@@ -24,7 +24,7 @@ void wil_lexer_string_literal(wil_lexer_context_t *context) {
 
   // -2 for both quotations, -1 to compensate for the previous advance
   cam_size_t end = (cam_size_t)(context->current - context->start - 2 - 1);
-  cam_type_substring(&literal, context->start + 1, 0, end);
+  cam_type_substring(&literal, context->start + 1, 0, end); // +1 for quote
 
   wil_lexer_add_token_literal(context, WIL_LEXER_TOKEN_STRING,
                               (wil_lexer_literal_t){.string = literal});

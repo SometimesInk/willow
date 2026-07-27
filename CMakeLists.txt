@@ -36,6 +36,7 @@ target_sources(
          include/willow/lexer/identifier.h
          include/willow/lexer/literal_string_lexer.h
          include/willow/lexer/literal_integer_and_float_lexer.h
+         include/willow/lexer/keyword_definitions.inc
          include/willow/lexer/token_definitions.inc
          include/willow/conf/config.h
          include/willow/conf/parser.h

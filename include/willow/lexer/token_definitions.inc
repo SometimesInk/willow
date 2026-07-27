@@ -10,8 +10,7 @@ X(WIL_LEXER_TOKEN_MINUS)       // -
 X(WIL_LEXER_TOKEN_PLUS)        // +
 X(WIL_LEXER_TOKEN_STAR)        // *
 X(WIL_LEXER_TOKEN_CARET)       // ^
-
-X(WIL_LEXER_TOKEN_SLASH) // /
+X(WIL_LEXER_TOKEN_SLASH)       // /
 
 // Pointers
 // X(WIL_LEXER_TOKEN_PTR)      // *
@@ -29,37 +28,13 @@ X(WIL_LEXER_TOKEN_LESS)          // <
 X(WIL_LEXER_TOKEN_LESS_EQUAL)    // <=
 
 // Operators
-X(WIL_LEXER_TOKEN_AND) // &&
-X(WIL_LEXER_TOKEN_OR)  // ||
+X(WIL_LEXER_TOKEN_AND) // && TODO: This token
+X(WIL_LEXER_TOKEN_OR)  // || TODO: This token
 
 // Literals
 X(WIL_LEXER_TOKEN_IDENTIFIER)
 X(WIL_LEXER_TOKEN_STRING)
 X(WIL_LEXER_TOKEN_INTEGER)
 X(WIL_LEXER_TOKEN_FLOAT)
-
-// Keywords
-X(WIL_LEXER_TOKEN_IF)      // if
-X(WIL_LEXER_TOKEN_ELSE)    // else
-X(WIL_LEXER_TOKEN_FOR)     // for
-X(WIL_LEXER_TOKEN_WHILE)   // while
-X(WIL_LEXER_TOKEN_TRUE)    // true
-X(WIL_LEXER_TOKEN_FALSE)   // false
-X(WIL_LEXER_TOKEN_TYPEDEF) // typedef
-X(WIL_LEXER_TOKEN_RETURN)  // return
-X(WIL_LEXER_TOKEN_NULL)    // null
-
-// Primitives
-X(WIL_LEXER_TOKEN_PRIM_INT)     // int
-X(WIL_LEXER_TOKEN_PRIM_STRING)  // string
-X(WIL_LEXER_TOKEN_PRIM_CHAR)    // char
-X(WIL_LEXER_TOKEN_PRIM_BOOLEAN) // boolean
-X(WIL_LEXER_TOKEN_PRIM_FLOAT)   // float
-X(WIL_LEXER_TOKEN_PRIM_VOID)    // void
-
-// Modifiers
-// X(WIL_LEXER_TOKEN_LONG)     // long
-// X(WIL_LEXER_TOKEN_SIGNED)   // signed
-// X(WIL_LEXER_TOKEN_UNSIGNED) // unsigned
 
 X(WIL_LEXER_TOKEN_EOF)
