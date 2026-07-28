@@ -34,10 +34,10 @@ typedef struct {
   /**
    * @warn If `type == WIL_LEXER_TOKEN_STRING`, then
    * `literal.string.str` is owned by this token and will be released
-   * by `wil_lexer_dispose_context()` using `free(3)`.
+   * by `wil_lexer_dispose_context()` using `free()`.
    *
    * Therefore, `literal.string.str` must either be NULL or point to
-   * memory that may legally be passed to `free(3)`. Borrowed pointers,
+   * memory that may legally be passed to `free()`. Borrowed pointers,
    * string literals, and pointers into the source buffer are invalid.
    */
   wil_lexer_literal_t literal;
