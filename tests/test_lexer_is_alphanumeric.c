@@ -1,3 +1,5 @@
+#define CAM_TEST
+
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/test/test.h>
@@ -6,8 +8,6 @@
 #include <willow/lexer/lexer_utils.h>
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
   CAM_TEST_ASSERT(wil_lexer_is_alphanumeric('a'));
   CAM_TEST_ASSERT(wil_lexer_is_alphanumeric('m'));
   CAM_TEST_ASSERT(wil_lexer_is_alphanumeric('z'));

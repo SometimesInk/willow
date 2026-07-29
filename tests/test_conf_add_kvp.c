@@ -1,3 +1,5 @@
+#define CAM_TEST
+
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/test/test.h>
@@ -6,8 +8,6 @@
 #include <willow/conf/config.h>
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
   cam_cptr_t name = "ENTRY_KEY";
   cam_cptr_t value = "ENTRY_VALUE";
   printf("name %s\n", name);

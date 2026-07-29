@@ -1,3 +1,5 @@
+#define CAM_TEST
+
 #include <stdio.h>
 #include <willow/io/io.h>
 
@@ -6,8 +8,6 @@
 #include <camellia/test/test.h>
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
   cam_str_t content;
   // TODO: Create a temporary file instead of this garbage
   cam_cptr_t file = "/home/ink/Projects/willow/CHANGELOG.md";

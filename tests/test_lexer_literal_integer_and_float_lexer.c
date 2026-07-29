@@ -1,4 +1,5 @@
-#include "willow/lexer/literal_integer_and_float_lexer.h"
+#define CAM_TEST
+
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/test/test.h>
@@ -8,6 +9,7 @@
 #include <willow/io/io.h>
 #include <willow/lexer/lexer.h>
 #include <willow/lexer/lexer_utils.h>
+#include <willow/lexer/literal_integer_and_float_lexer.h>
 #include <willow/lexer/literal_string_lexer.h>
 #include <willow/lexer/tokens.h>
 
@@ -21,10 +23,6 @@ wil_lexer_context_t context;
   } while (0)
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
-  printf("Starting test.\n");
-
   // Create context
   // TODO: Edge case testing for range
   cam_cptr_t source = "1234 1234.123413";

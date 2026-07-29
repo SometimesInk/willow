@@ -1,3 +1,5 @@
+#define CAM_TEST
+
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/test/test.h>
@@ -12,8 +14,6 @@
   } while (0)
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
   cam_cptr_t name = "ENTRY_KEY";
   cam_cptr_t value = "ENTRY_VALUE";
   cam_out_t out = wil_conf_add_kvp(name, value);

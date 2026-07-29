@@ -1,3 +1,5 @@
+#define CAM_TEST
+
 #include <willow/sys/env.h>
 
 #include <camellia/camellia.h>
@@ -5,8 +7,6 @@
 #include <camellia/test/test.h>
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
   // Exist
   cam_cptr_t name1 = "PATH";
   cam_str_t env1;

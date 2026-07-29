@@ -1,9 +1,10 @@
+#define CAM_TEST
+
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/test/test.h>
 #include <camellia/type/dynamic_array.h>
 #include <camellia/type/string.h>
-#include <stdio.h>
 #include <willow/io/io.h>
 #include <willow/lexer/lexer.h>
 #include <willow/lexer/lexer_utils.h>
@@ -20,10 +21,6 @@ wil_lexer_context_t context;
   } while (0)
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
-  printf("Starting test.\n");
-
   // Create context
   cam_cptr_t source = "\"willow\"";
   context = wil_lexer_create_context(source);

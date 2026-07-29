@@ -1,3 +1,5 @@
+#define CAM_TEST
+
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/test/test.h>
@@ -8,8 +10,6 @@
 #include <willow/lexer/lexer_utils.h>
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
   // Create context
   cam_cptr_t source = "__WIL_VERSION = \"1.0.0\"\n";
   wil_lexer_context_t context = wil_lexer_create_context(source);

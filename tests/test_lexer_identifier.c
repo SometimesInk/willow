@@ -1,4 +1,5 @@
-#include "willow/lexer/identifier.h"
+#define CAM_TEST
+
 #include <camellia/camellia.h>
 #include <camellia/err/err.h>
 #include <camellia/test/test.h>
@@ -6,6 +7,7 @@
 #include <camellia/type/string.h>
 #include <stdio.h>
 #include <willow/io/io.h>
+#include <willow/lexer/identifier.h>
 #include <willow/lexer/lexer.h>
 #include <willow/lexer/lexer_utils.h>
 #include <willow/lexer/literal_string_lexer.h>
@@ -21,8 +23,6 @@ wil_lexer_context_t context;
   } while (0)
 
 cam_test_result_t main(void) {
-  cam_test_start();
-
   // Create context
   cam_cptr_t source = "return identifier;";
   context = wil_lexer_create_context(source);
