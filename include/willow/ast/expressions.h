@@ -9,7 +9,7 @@ struct wil_ast_expr_s;
 #include <willow/ast/expressions.inc>
 #undef X
 
-typedef cam_type_uint32_t wil_ast_visitor_out_t;
+typedef cam_cptr_t wil_ast_visitor_out_t;
 
 typedef struct {
 #define X(name, components)                                                    \
@@ -27,6 +27,14 @@ typedef struct wil_ast_expr_s {
     wil_ast_expr_t base;                                                       \
     components                                                                 \
   } wil_ast_##name##_t;
+#include <willow/ast/expressions.inc>
+#undef X
+
+#define X(name, components)                                                    \
+  inline wil_ast_visitor_out_t accept_##name(wil_ast_expr_t *expr,             \
+                                             wil_ast_visitor_t *visitor) {     \
+    return expr->accept(expr, visitor);                                        \
+  }
 #include <willow/ast/expressions.inc>
 #undef X
 
