@@ -26,11 +26,16 @@ target_sources(
           src/willow/lexer/tokens.c
           src/willow/lexer/literal_string_lexer.c
           src/willow/lexer/literal_integer_and_float_lexer.c
+          src/willow/ast/pretty_print.c
+          src/willow/ast/expressions.c
   PUBLIC FILE_SET
          HEADERS
          BASE_DIRS
          include
          FILES
+         include/willow/ast/expressions.h
+         include/willow/ast/expressions.inc
+         include/willow/ast/pretty_print.h
          include/willow/lexer/lexer.h
          include/willow/lexer/lexer_utils.h
          include/willow/lexer/tokens.h

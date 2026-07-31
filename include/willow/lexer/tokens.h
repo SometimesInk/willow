@@ -41,7 +41,6 @@ typedef struct {
    * string literals, and pointers into the source buffer are invalid.
    */
   wil_lexer_literal_t literal;
-  ;
 } wil_lexer_token_t;
 
 extern cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,

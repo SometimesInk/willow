@@ -11,9 +11,11 @@ struct wil_ast_expr_s;
 
 typedef cam_cptr_t wil_ast_visitor_out_t;
 
-typedef struct {
+struct wil_ast_visitor_s;
+typedef struct wil_ast_visitor_s {
 #define X(name, components)                                                    \
-  wil_ast_visitor_out_t (*visit_##name)(struct wil_ast_##name##_s *);
+  wil_ast_visitor_out_t (*visit_##name)(struct wil_ast_visitor_s * visitor,    \
+                                        struct wil_ast_##name##_s *);
 #include <willow/ast/expressions.inc>
 #undef X
 } wil_ast_visitor_t;
@@ -31,10 +33,8 @@ typedef struct wil_ast_expr_s {
 #undef X
 
 #define X(name, components)                                                    \
-  inline wil_ast_visitor_out_t accept_##name(wil_ast_expr_t *expr,             \
-                                             wil_ast_visitor_t *visitor) {     \
-    return expr->accept(expr, visitor);                                        \
-  }
+  extern wil_ast_visitor_out_t wil_ast_accept_##name(                          \
+      wil_ast_expr_t *expr, wil_ast_visitor_t *visitor);
 #include <willow/ast/expressions.inc>
 #undef X
 

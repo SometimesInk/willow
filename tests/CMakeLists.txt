@@ -1,4 +1,5 @@
 set(UNIT_TEST_SOURCES
+    test_ast_pretty_print.c
     test_sys_env_var.c
     test_conf_add_kvp.c
     test_conf_dispose.c
