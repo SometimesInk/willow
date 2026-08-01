@@ -9,7 +9,6 @@
 #include <willow/io/io.h>
 #include <willow/lexer/lexer.h>
 #include <willow/lexer/lexer_utils.h>
-#include <willow/lexer/literal_string_lexer.h>
 #include <willow/lexer/tokens.h>
 
 wil_lexer_context_t context;

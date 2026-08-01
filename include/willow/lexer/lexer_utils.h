@@ -67,4 +67,6 @@ extern cam_out_t wil_lexer_is_alpha(char c);
  */
 extern cam_out_t wil_lexer_is_alphanumeric(char c);
 
+extern void wil_lexer_identifier(wil_lexer_context_t *context);
+
 #endif /* WILLOW__LEXER_LEXER_UTILS_H__ */

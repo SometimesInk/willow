@@ -43,6 +43,13 @@ typedef struct {
   wil_lexer_literal_t literal;
 } wil_lexer_token_t;
 
+extern wil_lexer_token_type_t
+wil_lexer_keyword_check(cam_str_t lit, cam_cptr_t check,
+                        wil_lexer_token_type_t type);
+
+extern wil_lexer_token_type_t
+wil_lexer_identifier_is_keyword(wil_lexer_context_t *context);
+
 extern cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
                                           cam_type_dyn_arr_t *arr);
 
@@ -53,5 +60,11 @@ extern void wil_lexer_token_dump_str(const wil_lexer_token_t *token);
 extern void wil_lexer_token_dump_int(const wil_lexer_token_t *token);
 
 extern void wil_lexer_token_dump_dec(const wil_lexer_token_t *token);
+
+extern void wil_lexer_parse_float(wil_lexer_context_t *context);
+
+extern void wil_lexer_integer_and_float_literal(wil_lexer_context_t *context);
+
+extern void wil_lexer_string_literal(wil_lexer_context_t *context);
 
 #endif /* WILLOW__LEXER_TOKENS_H__ */

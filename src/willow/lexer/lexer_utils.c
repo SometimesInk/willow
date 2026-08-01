@@ -112,3 +112,15 @@ cam_out_t wil_lexer_is_alpha(char c) {
 cam_out_t wil_lexer_is_alphanumeric(char c) {
   return wil_lexer_is_digit(c) || wil_lexer_is_alpha(c);
 };
+
+void wil_lexer_identifier(wil_lexer_context_t *context) {
+  // Consume all alphanumeric characters in the identifier (which may be a
+  // keyword at this point)
+  while (wil_lexer_is_alphanumeric(wil_lexer_peek(context)))
+    wil_lexer_advance(context);
+
+  wil_lexer_token_type_t type;
+  type = wil_lexer_identifier_is_keyword(context);
+
+  wil_lexer_add_token(context, type);
+}
