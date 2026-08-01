@@ -13,20 +13,19 @@ typedef struct {
 extern cam_out_t wil_ast_parse(wil_ast_parser_context_t *context,
                                wil_ast_expr_t *expr_out);
 
-extern wil_ast_expr_t *wil_ast_parse_expr(wil_ast_parser_context_t *context);
+extern wil_ast_expr_t wil_ast_parse_expr(wil_ast_parser_context_t *context);
 
-extern wil_ast_expr_t *
-wil_ast_parse_equality(wil_ast_parser_context_t *context);
+extern wil_ast_expr_t wil_ast_parse_equality(wil_ast_parser_context_t *context);
 
-extern wil_ast_expr_t *
+extern wil_ast_expr_t
 wil_ast_parse_comparison(wil_ast_parser_context_t *context);
 
-extern wil_ast_expr_t *wil_ast_parse_term(wil_ast_parser_context_t *context);
+extern wil_ast_expr_t wil_ast_parse_term(wil_ast_parser_context_t *context);
 
-extern wil_ast_expr_t *wil_ast_parse_factor(wil_ast_parser_context_t *context);
+extern wil_ast_expr_t wil_ast_parse_factor(wil_ast_parser_context_t *context);
 
-extern wil_ast_expr_t *wil_ast_parse_unary(wil_ast_parser_context_t *context);
+extern wil_ast_expr_t wil_ast_parse_unary(wil_ast_parser_context_t *context);
 
-extern wil_ast_expr_t *wil_ast_parse_pimary(wil_ast_parser_context_t *context);
+extern wil_ast_expr_t wil_ast_parse_pimary(wil_ast_parser_context_t *context);
 
 #endif /* WIL__AST_PARSER_H__ */
