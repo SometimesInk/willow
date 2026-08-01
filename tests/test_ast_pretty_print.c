@@ -2,7 +2,7 @@
 
 #include <camellia/test/test.h>
 #include <willow/ast/expressions.h>
-#include <willow/ast/pretty_print.h>
+#include <willow/ast/parser_utils.h>
 #include <willow/lexer/tokens.h>
 
 cam_test_result_t main(void) {

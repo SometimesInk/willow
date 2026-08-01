@@ -18,4 +18,6 @@ extern cam_int_t wil_ast_check(wil_ast_parser_context_t *context,
 extern cam_int_t wil_ast_match(wil_ast_parser_context_t *context,
                                cam_size_t n_expr, ...);
 
+extern void wil_ast_pretty_print(wil_ast_expr_t *expr);
+
 #endif /* WIL__AST_PARSER_UTILS_H__ */
