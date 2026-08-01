@@ -27,7 +27,6 @@ target_sources(
           src/willow/lexer/literal_string_lexer.c
           src/willow/lexer/literal_integer_and_float_lexer.c
           src/willow/ast/pretty_print.c
-          src/willow/ast/expressions.c
   PUBLIC FILE_SET
          HEADERS
          BASE_DIRS
