@@ -22,7 +22,6 @@ target_sources(
           src/willow/lexer/lexer.c
           src/willow/lexer/lexer_utils.c
           src/willow/lexer/tokens.c
-          src/willow/ast/pretty_print.c
           src/willow/ast/parser.c
           src/willow/ast/parser_utils.c
   PUBLIC FILE_SET
@@ -32,9 +31,9 @@ target_sources(
          FILES
          include/willow/ast/expressions.h
          include/willow/ast/expressions.inc
-         include/willow/ast/pretty_print.h
          include/willow/ast/parser.h
          include/willow/ast/parser_utils.h
+         include/willow/ast/err.inc
          include/willow/lexer/lexer.h
          include/willow/lexer/lexer_utils.h
          include/willow/lexer/tokens.h

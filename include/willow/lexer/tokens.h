@@ -53,6 +53,8 @@ wil_lexer_identifier_is_keyword(wil_lexer_context_t *context);
 extern cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
                                           cam_type_dyn_arr_t *arr);
 
+extern void wil_lexer_token_dump(const wil_lexer_token_t *token);
+
 extern void wil_lexer_token_dump_none(const wil_lexer_token_t *token);
 
 extern void wil_lexer_token_dump_str(const wil_lexer_token_t *token);

@@ -8,9 +8,6 @@ set(UNIT_TEST_SOURCES
     test_lexer_add_token_simple.c
     test_lexer_add_token_literal.c
     test_lexer_add_token.c
-    test_lexer_is_digit.c
-    test_lexer_is_alpha.c
-    test_lexer_is_alphanumeric.c
     test_lexer_identifier.c
     test_lexer_match_i.c
     test_lexer_literal_string_lexer.c

@@ -15,19 +15,7 @@ typedef enum {
 #define X(name, upper, components) struct wil_ast_##name##_s;
 #include <willow/ast/expressions.inc>
 #undef X
-
-// Abstract expr struct using our beloved unions
-
-union wil_ast_expr_u {
-#define X(name, upper, components) struct wil_ast_##name##_s *name;
-#include <willow/ast/expressions.inc>
-#undef X
-};
-
-typedef struct {
-  wil_ast_expr_type_t type;
-  union wil_ast_expr_u base;
-} wil_ast_expr_t;
+struct wil_ast_expr_s;
 
 // Definition for forward declared expr types
 
@@ -37,6 +25,17 @@ typedef struct {
   } wil_ast_##name##_t;
 #include <willow/ast/expressions.inc>
 #undef X
+
+// Expression declaration
+
+typedef struct wil_ast_expr_s {
+  wil_ast_expr_type_t type;
+  union {
+#define X(name, upper, components) struct wil_ast_##name##_s name;
+#include <willow/ast/expressions.inc>
+#undef X
+  };
+} wil_ast_expr_t;
 
 // Here is my excuse for all these X-macros: laziness is the virtue of a good
 // programmer

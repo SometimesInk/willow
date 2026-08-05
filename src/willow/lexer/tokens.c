@@ -83,9 +83,9 @@ cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
     wil_lexer_string_literal(context);
     break;
   default:
-    if (wil_lexer_is_digit(c)) {
+    if (cam_type_is_digit(c)) {
       wil_lexer_integer_and_float_literal(context);
-    } else if (wil_lexer_is_alpha(c)) {
+    } else if (cam_type_is_alpha(c)) {
       wil_lexer_identifier(context);
     } else {
       wil_lexer_err(context, "Invalid character.");
@@ -94,6 +94,22 @@ cam_out_t wil_lexer_scan_one_token(wil_lexer_context_t *context,
   }
 
   CAM_ERR_RETURN_SUCCESS();
+}
+
+void wil_lexer_token_dump(const wil_lexer_token_t *token) {
+  if (token->type == WIL_LEXER_TOKEN_STRING) {
+    wil_lexer_token_dump_str(token);
+    return;
+  }
+  if (token->type == WIL_LEXER_TOKEN_INTEGER) {
+    wil_lexer_token_dump_int(token);
+    return;
+  }
+  if (token->type == WIL_LEXER_TOKEN_FLOAT) {
+    wil_lexer_token_dump_dec(token);
+    return;
+  }
+  wil_lexer_token_dump_none(token);
 }
 
 void wil_lexer_token_dump_none(const wil_lexer_token_t *token) {
@@ -157,7 +173,7 @@ wil_lexer_identifier_is_keyword(wil_lexer_context_t *context) {
 
 void wil_lexer_parse_float(wil_lexer_context_t *context) {
   // Consume digits past decimal
-  while (wil_lexer_is_digit(wil_lexer_peek(context))) {
+  while (cam_type_is_digit(wil_lexer_peek(context))) {
     if (wil_lexer_is_at_end(context))
       break;
     wil_lexer_advance(context);
@@ -177,7 +193,7 @@ void wil_lexer_parse_float(wil_lexer_context_t *context) {
 
 void wil_lexer_integer_and_float_literal(wil_lexer_context_t *context) {
   // Consume all digits
-  while (wil_lexer_is_digit(wil_lexer_peek(context))) {
+  while (cam_type_is_digit(wil_lexer_peek(context))) {
     if (wil_lexer_is_at_end(context))
       break;
     wil_lexer_advance(context);
