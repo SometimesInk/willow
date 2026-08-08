@@ -2,6 +2,7 @@
 #include <camellia/type/dynamic_array.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 #include <willow/ast/parser_utils.h>
 #include <willow/lexer/tokens.h>
 
@@ -52,7 +53,7 @@ cam_int_t wil_ast_match(wil_ast_parser_context_t *context, cam_size_t n_expr,
   for (cam_size_t i = 0; i < n_expr; ++i) {
     wil_lexer_token_type_t type = va_arg(argp, wil_lexer_token_type_t);
     if (wil_ast_check(context, type)) {
-      // Advance
+      wil_ast_advance(context);
       return CAM_TRUE;
     }
   }
@@ -61,17 +62,18 @@ cam_int_t wil_ast_match(wil_ast_parser_context_t *context, cam_size_t n_expr,
   return CAM_FALSE;
 }
 
-CAM_STATIC void wil_ast_parenthesize_(cam_cptr_t name, cam_size_t n_expr, ...) {
+CAM_STATIC void wil_ast_parenthesize_(cam_str_t name, cam_size_t n_expr, ...) {
   va_list argp;
   va_start(argp, n_expr);
 
   printf("(");
 
-  if (name != CAM_NULL)
-    printf("%s", name);
+  if (name.str != CAM_NULL)
+    printf("%.*s", (cam_int_t)name.len, name.str);
 
   for (cam_size_t i = 0; i < n_expr; ++i) {
-    printf(" ");
+    if (!(i == 0 && name.str == CAM_NULL))
+      printf(" ");
     wil_ast_expr_t *expr = va_arg(argp, wil_ast_expr_t *);
 
     wil_ast_pretty_print(expr);
@@ -82,20 +84,27 @@ CAM_STATIC void wil_ast_parenthesize_(cam_cptr_t name, cam_size_t n_expr, ...) {
   va_end(argp);
 }
 
+#define WIL_AST_PARENTHESIZE_PTR_(name, n_expr, ...)                           \
+  do {                                                                         \
+    cam_str_t str = {.str = name, .len = strlen(name)};                        \
+    wil_ast_parenthesize_(str, n_expr, __VA_ARGS__);                           \
+  } while (0)
+
 void wil_ast_pretty_print(wil_ast_expr_t *expr) {
   switch (expr->type) {
   case WIL_AST_EXPR_TYPE_UNARY:
-    wil_ast_parenthesize_(expr->unary.op->lexeme.str, 1, expr->unary.expr);
+    wil_ast_parenthesize_(expr->unary.op->lexeme, 1, expr->unary.expr);
     break;
   case WIL_AST_EXPR_TYPE_BINARY:
-    wil_ast_parenthesize_(expr->binary.op->lexeme.str, 2, expr->binary.left,
+    wil_ast_parenthesize_(expr->binary.op->lexeme, 2, expr->binary.left,
                           expr->binary.right);
     break;
   case WIL_AST_EXPR_TYPE_GROUP:
-    wil_ast_parenthesize_("group", 1, expr);
+    WIL_AST_PARENTHESIZE_PTR_("group", 1, expr->group.expr);
     break;
   case WIL_AST_EXPR_TYPE_LIT:
-    printf("%s", expr->lit.token.lexeme.str);
+    printf("%.*s", (cam_int_t)expr->lit.token.lexeme.len,
+           expr->lit.token.lexeme.str);
     break;
   };
 }
