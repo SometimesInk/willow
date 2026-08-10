@@ -15,7 +15,7 @@ typedef enum {
 #define X(name, upper, components) struct wil_ast_##name##_s;
 #include <willow/ast/expressions.inc>
 #undef X
-struct wil_ast_expr_s;
+typedef struct wil_ast_expr_s wil_ast_expr_t;
 
 // Definition for forward declared expr types
 

@@ -19,6 +19,15 @@ typedef enum {
   WIL_LEXER_TOKEN_LEN,
 } wil_lexer_token_type_t;
 
+static const char *const wil_lexer_token_type_name[WIL_LEXER_TOKEN_LEN] = {
+#define X(token) [token] = #token,
+#include <willow/lexer/token_definitions.inc>
+#undef X
+#define X(token, string) [token] = #token,
+#include <willow/lexer/keyword_definitions.inc>
+#undef X
+};
+
 typedef union {
   cam_str_t string;
   cam_int_t integer;
@@ -27,7 +36,7 @@ typedef union {
 
 #define WIL_LEXER_TOKEN_INI_LEN 8
 
-typedef struct {
+typedef struct wil_lexer_token_s {
   wil_lexer_token_type_t type;
   cam_str_t lexeme;
   cam_int_t line;

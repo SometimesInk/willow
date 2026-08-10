@@ -3,8 +3,10 @@
 
 #include <camellia/camellia.h>
 #include <camellia/type/dynamic_array.h>
+#include <willow/err/err.h>
 
 typedef struct {
+  // TODO: wil_err_context_t *diagnostics;
   /**
    * @brief Whether an error has occurred.
    */

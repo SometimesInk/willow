@@ -107,4 +107,5 @@ void wil_ast_pretty_print(wil_ast_expr_t *expr) {
            expr->lit.token.lexeme.str);
     break;
   };
+  putc('\n', stdout);
 }

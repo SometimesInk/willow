@@ -10,6 +10,7 @@
 #define WIL_AST_DEF_AR_SIZE (8 * sizeof(wil_ast_expr_t))
 
 typedef struct {
+  // TODO: wil_err_context_t *diagnostics;
   cam_size_t index;
   cam_type_dyn_arr_t tokens;
   cam_type_arena_t ar;
