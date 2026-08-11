@@ -5,7 +5,7 @@
 #include <willow/ast/parser.h>
 #include <willow/ast/parser_utils.h>
 #include <willow/err/err.h>
-#include <willow/lexer/tokens.h>
+#include <willow/lexer/lexer.h>
 
 #define WIL_AST_AR_ALLOC(type_)                                                \
   cam_type_alloc_arena(&context->ar, sizeof(type_), _Alignof(type_))
@@ -14,9 +14,6 @@ CAM_STATIC wil_ast_expr_t *wil_ast_mk_bin_(wil_ast_parser_context_t *context,
                                            wil_ast_expr_t *left,
                                            wil_lexer_token_t *tok,
                                            wil_ast_expr_t *right) {
-  printf("+wil_ast_mk_bin_@%lu\n", context->index);
-  printf("+%.*s<- you are looking for this\n", (cam_int_t)tok->lexeme.len,
-         tok->lexeme.str);
   wil_ast_expr_t *node = WIL_AST_AR_ALLOC(wil_ast_expr_t);
   if (node == CAM_NULL)
     return CAM_NULL;
@@ -30,7 +27,6 @@ CAM_STATIC wil_ast_expr_t *wil_ast_mk_bin_(wil_ast_parser_context_t *context,
 CAM_STATIC wil_ast_expr_t *wil_ast_mk_unary_(wil_ast_parser_context_t *context,
                                              wil_lexer_token_t *tok,
                                              wil_ast_expr_t *right) {
-  printf("+wil_ast_mk_unary_@%lu\n", context->index);
   wil_ast_expr_t *node = WIL_AST_AR_ALLOC(wil_ast_expr_t);
   if (node == CAM_NULL)
     return CAM_NULL;
@@ -42,7 +38,6 @@ CAM_STATIC wil_ast_expr_t *wil_ast_mk_unary_(wil_ast_parser_context_t *context,
 
 CAM_STATIC wil_ast_expr_t *wil_ast_mk_lit_(wil_ast_parser_context_t *context,
                                            wil_lexer_token_t *tok) {
-  printf("+wil_ast_mk_lit_@%lu\n", context->index);
   wil_ast_expr_t *node = WIL_AST_AR_ALLOC(wil_ast_expr_t);
   if (node == CAM_NULL)
     return CAM_NULL;
@@ -53,7 +48,6 @@ CAM_STATIC wil_ast_expr_t *wil_ast_mk_lit_(wil_ast_parser_context_t *context,
 
 CAM_STATIC wil_ast_expr_t *wil_ast_mk_group_(wil_ast_parser_context_t *context,
                                              wil_ast_expr_t *expr) {
-  printf("+wil_ast_mk_group_@%lu\n", context->index);
   wil_ast_expr_t *node = WIL_AST_AR_ALLOC(wil_ast_expr_t);
   if (node == CAM_NULL)
     return CAM_NULL;
@@ -65,6 +59,7 @@ CAM_STATIC wil_ast_expr_t *wil_ast_mk_group_(wil_ast_parser_context_t *context,
 wil_ast_expr_t *wil_ast_parse_expr(wil_ast_parser_context_t *context) {
   printf("wil_ast_parse_expr@%lu\n", context->index);
   return wil_ast_parse_equality(context);
+  printf("wil_ast_parse_expr@end\n");
 }
 
 wil_ast_expr_t *wil_ast_parse_equality(wil_ast_parser_context_t *context) {
@@ -192,7 +187,7 @@ wil_ast_expr_t *wil_ast_parse_primary(wil_ast_parser_context_t *context) {
   if (wil_ast_match(context, 6, WIL_LEXER_TOKEN_KW_FALSE,
                     WIL_LEXER_TOKEN_KW_TRUE, WIL_LEXER_TOKEN_KW_NULL,
                     WIL_LEXER_TOKEN_INTEGER, WIL_LEXER_TOKEN_STRING,
-                    WIL_LEXER_TOKEN_FLOAT)) {
+                    WIL_LEXER_TOKEN_DECIMAL)) {
     printf("|matched literal keyword.\n");
     wil_lexer_token_t *tok = wil_ast_previous(context);
     if (tok == CAM_NULL)

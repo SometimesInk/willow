@@ -2,6 +2,7 @@
 #define WIL__ERR_ERR_H__
 
 #include <camellia/type/dynamic_array.h>
+#include <willow/lexer/source.h>
 
 typedef enum {
   WIL_ERR_SEVERITY_ERROR,
@@ -77,12 +78,17 @@ typedef struct wil_lexer_token_s wil_lexer_token_t;
 typedef struct wil_ast_expr_s wil_ast_expr_t;
 
 typedef struct {
-  enum { WIL_ERR_DIAGNOSTIC_TYPE_EXPR, WIL_ERR_DIAGNOSTIC_TYPE_TOKEN } type;
+  enum {
+    WIL_ERR_DIAGNOSTIC_TYPE_SSPAN,
+    WIL_ERR_DIAGNOSTIC_TYPE_EXPR,
+    WIL_ERR_DIAGNOSTIC_TYPE_TOKEN
+  } type;
   wil_err_code_t code;
   wil_err_severity_t severity;
   wil_err_phase_t phase;
 
   union {
+    wil_lexer_sspan_t sspan;
     wil_lexer_token_t *token;
     wil_ast_expr_t *expr;
   } source;
@@ -98,11 +104,14 @@ extern wil_err_context_t wil_err_create_context();
 
 extern void wil_err_dispose_context(wil_err_context_t *c);
 
-extern void wil_err_emit_t(wil_err_context_t *c, wil_err_code_t code,
-                           wil_lexer_token_t *token, ...);
+extern void wil_err_emit_s(wil_err_context_t *, wil_err_code_t,
+                           wil_lexer_sspan_t, ...);
 
-extern void wil_err_emit_e(wil_err_context_t *c, wil_err_code_t code,
-                           wil_ast_expr_t *token, ...);
+extern void wil_err_emit_t(wil_err_context_t *, wil_err_code_t,
+                           wil_lexer_token_t *, ...);
+
+extern void wil_err_emit_e(wil_err_context_t *, wil_err_code_t,
+                           wil_ast_expr_t *, ...);
 
 extern void wil_err_print(wil_err_context_t *);
 

@@ -5,7 +5,7 @@
 #include <string.h>
 #include <willow/ast/parser_utils.h>
 #include <willow/err/err.h>
-#include <willow/lexer/tokens.h>
+#include <willow/lexer/lexer_utils.h>
 
 wil_lexer_token_t *wil_ast_consume(wil_ast_parser_context_t *c,
                                    wil_lexer_token_type_t type,

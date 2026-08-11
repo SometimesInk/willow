@@ -2,7 +2,7 @@
 #define WILLOW__AST_EXPRESSION_TYPES_H__
 
 #include <camellia/type/int.h>
-#include <willow/lexer/tokens.h>
+#include <willow/lexer/lexer.h>
 
 typedef enum {
 #define X(name, upper, components) WIL_AST_EXPR_TYPE_##upper,

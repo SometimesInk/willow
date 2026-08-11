@@ -3,6 +3,8 @@
 
 #include <camellia/camellia.h>
 #include <willow/ast/expressions.h>
+#include <willow/err/err.h>
+
 typedef struct {
 } wil_ast_runtime_context_t;
 
@@ -17,7 +19,7 @@ typedef enum {
    */
   WIL_AST_VALUE_TYPE_NONE,
   WIL_AST_VALUE_TYPE_INTEGER,
-  WIL_AST_VALUE_TYPE_FLOAT,
+  WIL_AST_VALUE_TYPE_DECIMAL,
   WIL_AST_VALUE_TYPE_STRING,
   WIL_AST_VALUE_TYPE_CHAR,
   WIL_AST_VALUE_TYPE_BOOLEAN,
@@ -28,7 +30,7 @@ typedef enum {
 static const char *const wil_ast_value_type_name[WIL_AST_VALUE_TYPE_LEN] = {
     [WIL_AST_VALUE_TYPE_NONE] = "none",
     [WIL_AST_VALUE_TYPE_INTEGER] = "integer",
-    [WIL_AST_VALUE_TYPE_FLOAT] = "float",
+    [WIL_AST_VALUE_TYPE_DECIMAL] = "decimal",
     [WIL_AST_VALUE_TYPE_STRING] = "string",
     [WIL_AST_VALUE_TYPE_CHAR] = "char",
     [WIL_AST_VALUE_TYPE_BOOLEAN] = "boolean",
@@ -37,14 +39,14 @@ static const char *const wil_ast_value_type_name[WIL_AST_VALUE_TYPE_LEN] = {
 typedef struct {
   wil_ast_value_type_t type;
   union {
-    cam_int_t integer;
-    float decimal;
-    cam_str_t string;
+    cam_int_t i;
+    float d;
+    cam_str_t s;
     char c;
     /**
      * @brief Runtime value should ALWAYS be either CAM_TRUE or CAM_FALSE.
      */
-    cam_int_t boolean;
+    cam_int_t b;
   } val;
 } wil_ast_value_t;
 

@@ -3,7 +3,7 @@
 
 #include <willow/ast/parser.h>
 #include <willow/err/err.h>
-#include <willow/lexer/tokens.h>
+#include <willow/lexer/lexer.h>
 
 extern wil_lexer_token_t *wil_ast_consume(wil_ast_parser_context_t *context,
                                           wil_lexer_token_type_t type,
