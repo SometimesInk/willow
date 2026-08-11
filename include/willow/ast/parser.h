@@ -1,6 +1,7 @@
 #ifndef WIL__AST_PARSER_H__
 #define WIL__AST_PARSER_H__
 
+#include "willow/err/err.h"
 #include <camellia/camellia.h>
 #include <camellia/type/arena.h>
 #include <camellia/type/dynamic_array.h>
@@ -10,7 +11,7 @@
 #define WIL_AST_DEF_AR_SIZE (8 * sizeof(wil_ast_expr_t))
 
 typedef struct {
-  // TODO: wil_err_context_t *diagnostics;
+  wil_err_context_t *err;
   cam_size_t index;
   cam_type_dyn_arr_t tokens;
   cam_type_arena_t ar;
@@ -33,8 +34,12 @@ extern wil_ast_expr_t *wil_ast_parse_unary(wil_ast_parser_context_t *context);
 extern wil_ast_expr_t *wil_ast_parse_primary(wil_ast_parser_context_t *context);
 
 extern wil_ast_parser_context_t
-wil_ast_create_parser_context(wil_lexer_context_t *context);
+wil_ast_create_parser_context(wil_err_context_t *err,
+                              wil_lexer_context_t *context);
 
+/**
+ * @brief Dispose of wil_ast_parser_context_t before wil_lexer_context_t
+ */
 extern void wil_ast_dispose_parser_context(wil_ast_parser_context_t *context);
 
 #endif /* WIL__AST_PARSER_H__ */

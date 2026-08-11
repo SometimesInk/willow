@@ -94,7 +94,7 @@ typedef struct {
   cam_type_dyn_arr_t diagnostics;
 } wil_err_context_t;
 
-extern cam_out_t wil_err_create_context(wil_err_context_t *c);
+extern wil_err_context_t wil_err_create_context();
 
 extern void wil_err_dispose_context(wil_err_context_t *c);
 
@@ -103,5 +103,7 @@ extern void wil_err_emit_t(wil_err_context_t *c, wil_err_code_t code,
 
 extern void wil_err_emit_e(wil_err_context_t *c, wil_err_code_t code,
                            wil_ast_expr_t *token, ...);
+
+extern void wil_err_print(wil_err_context_t *);
 
 #endif /* WIL__ERR_ERR_H__ */

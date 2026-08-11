@@ -4,17 +4,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <willow/ast/parser_utils.h>
+#include <willow/err/err.h>
 #include <willow/lexer/tokens.h>
 
-wil_lexer_token_t *wil_ast_consume(wil_ast_parser_context_t *context,
+wil_lexer_token_t *wil_ast_consume(wil_ast_parser_context_t *c,
                                    wil_lexer_token_type_t type,
-                                   wil_ast_err_t err) {
-  if (wil_ast_check(context, type)) {
-    return wil_ast_advance(context);
+                                   wil_err_code_t err) {
+  wil_lexer_token_t *token = wil_ast_peek(c);
+  if (token->type == type) {
+    return wil_ast_advance(c);
   }
 
-  printf("PARSER ERROR %d", err);
-  wil_lexer_token_dump(wil_ast_peek(context));
+  wil_err_emit_t(c->err, err, token);
+  wil_lexer_token_dump(token);
   return CAM_NULL;
 }
 
@@ -50,17 +52,23 @@ cam_int_t wil_ast_match(wil_ast_parser_context_t *context, cam_size_t n_expr,
   va_list argp;
   va_start(argp, n_expr);
 
+  cam_int_t matched = CAM_FALSE;
+
   for (cam_size_t i = 0; i < n_expr; ++i) {
-    wil_lexer_token_type_t type = va_arg(argp, wil_lexer_token_type_t);
-    if (wil_ast_check(context, type)) {
-      wil_ast_advance(context);
-      return CAM_TRUE;
-    }
+    wil_lexer_token_type_t type = (wil_lexer_token_type_t)va_arg(argp, int);
+    if (!wil_ast_check(context, type))
+      continue;
+
+    wil_ast_advance(context);
+    matched = CAM_TRUE;
+    break;
   }
 
   va_end(argp);
-  return CAM_FALSE;
+  return matched;
 }
+
+CAM_STATIC void wil_ast_pretty_print_expr_(wil_ast_expr_t *expr);
 
 CAM_STATIC void wil_ast_parenthesize_(cam_str_t name, cam_size_t n_expr, ...) {
   va_list argp;
@@ -76,7 +84,7 @@ CAM_STATIC void wil_ast_parenthesize_(cam_str_t name, cam_size_t n_expr, ...) {
       printf(" ");
     wil_ast_expr_t *expr = va_arg(argp, wil_ast_expr_t *);
 
-    wil_ast_pretty_print(expr);
+    wil_ast_pretty_print_expr_(expr);
   }
 
   printf(")");
@@ -90,7 +98,7 @@ CAM_STATIC void wil_ast_parenthesize_(cam_str_t name, cam_size_t n_expr, ...) {
     wil_ast_parenthesize_(str, n_expr, __VA_ARGS__);                           \
   } while (0)
 
-void wil_ast_pretty_print(wil_ast_expr_t *expr) {
+CAM_STATIC void wil_ast_pretty_print_expr_(wil_ast_expr_t *expr) {
   switch (expr->type) {
   case WIL_AST_EXPR_TYPE_UNARY:
     wil_ast_parenthesize_(expr->unary.op->lexeme, 1, expr->unary.expr);
@@ -107,5 +115,9 @@ void wil_ast_pretty_print(wil_ast_expr_t *expr) {
            expr->lit.token.lexeme.str);
     break;
   };
+}
+
+void wil_ast_pretty_print(wil_ast_expr_t *expr) {
+  wil_ast_pretty_print_expr_(expr);
   putc('\n', stdout);
 }

@@ -1,16 +1,15 @@
-#include "willow/ast/parser_utils.h"
 #include <camellia/camellia.h>
 #include <camellia/type/dynamic_array.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <willow/ast/expressions.h>
+#include <willow/ast/parser_utils.h>
 #include <willow/err/err.h>
 
-cam_out_t wil_err_create_context(wil_err_context_t *c) {
-  if (cam_type_create_dyn_arr(&c->diagnostics, sizeof(wil_err_diagnostic_t),
-                              4) == CAM_FAILURE)
-    return CAM_FAILURE;
-  return CAM_SUCCESS;
+wil_err_context_t wil_err_create_context() {
+  wil_err_context_t c;
+  cam_type_create_dyn_arr(&c.diagnostics, sizeof(wil_err_diagnostic_t), 4);
+  return c;
 }
 
 void wil_err_dispose_context(wil_err_context_t *c) {

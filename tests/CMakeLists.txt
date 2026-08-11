@@ -1,6 +1,4 @@
 set(UNIT_TEST_SOURCES
-  test_ast_expr.c
-  test_ast_pretty_print.c
   test_sys_env_var.c
   test_conf_add_kvp.c
   test_conf_dispose.c
@@ -14,7 +12,11 @@ set(UNIT_TEST_SOURCES
   test_lexer_literal_string_lexer.c
   test_lexer_scan_tokens.c
   test_lexer_literal_integer_and_float_lexer.c)
-set(INTEGRATION_TEST_SOURCES test_io_read_file.c)
+set(INTEGRATION_TEST_SOURCES
+  test_ast_evaluate.c
+  test_ast_expr.c
+  test_ast_pretty_print.c
+  test_io_read_file.c)
 
 foreach(test_src ${UNIT_TEST_SOURCES})
   get_filename_component(test_name ${test_src} NAME_WE)

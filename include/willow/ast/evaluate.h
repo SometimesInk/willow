@@ -23,6 +23,16 @@ typedef enum {
   WIL_AST_VALUE_TYPE_BOOLEAN,
   WIL_AST_VALUE_TYPE_NULL,
 } wil_ast_value_type_t;
+#define WIL_AST_VALUE_TYPE_LEN 7
+
+static const char *const wil_ast_value_type_name[WIL_AST_VALUE_TYPE_LEN] = {
+    [WIL_AST_VALUE_TYPE_NONE] = "none",
+    [WIL_AST_VALUE_TYPE_INTEGER] = "integer",
+    [WIL_AST_VALUE_TYPE_FLOAT] = "float",
+    [WIL_AST_VALUE_TYPE_STRING] = "string",
+    [WIL_AST_VALUE_TYPE_CHAR] = "char",
+    [WIL_AST_VALUE_TYPE_BOOLEAN] = "boolean",
+    [WIL_AST_VALUE_TYPE_NULL] = "null"};
 
 typedef struct {
   wil_ast_value_type_t type;
@@ -40,5 +50,7 @@ typedef struct {
 
 extern wil_ast_value_t wil_ast_eval_expr(wil_ast_interpreter_context_t *c,
                                          wil_ast_expr_t *expr);
+
+extern void wil_ast_print_eval_value(wil_ast_value_t val);
 
 #endif /* WIL__AST_EVALUATE_H__ */

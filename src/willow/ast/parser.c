@@ -4,14 +4,8 @@
 #include <willow/ast/expressions.h>
 #include <willow/ast/parser.h>
 #include <willow/ast/parser_utils.h>
+#include <willow/err/err.h>
 #include <willow/lexer/tokens.h>
-
-/*
-typedef struct {
-  wil_ast_expr_type_t type;
-  union wil_ast_expr_u base;
-} wil_ast_expr_t;
-*/
 
 #define WIL_AST_AR_ALLOC(type_)                                                \
   cam_type_alloc_arena(&context->ar, sizeof(type_), _Alignof(type_))
@@ -41,8 +35,8 @@ CAM_STATIC wil_ast_expr_t *wil_ast_mk_unary_(wil_ast_parser_context_t *context,
   if (node == CAM_NULL)
     return CAM_NULL;
   node->type = WIL_AST_EXPR_TYPE_UNARY;
-  node->binary.op = tok;
-  node->binary.right = right;
+  node->unary.op = tok;
+  node->unary.expr = right;
   return node;
 }
 
@@ -147,7 +141,6 @@ wil_ast_expr_t *wil_ast_parse_term(wil_ast_parser_context_t *context) {
 
   printf("wil_ast_parse_term@end\n");
   wil_ast_pretty_print(expr);
-  putc('\n', stdout);
   return expr;
 }
 
@@ -216,7 +209,7 @@ wil_ast_expr_t *wil_ast_parse_primary(wil_ast_parser_context_t *context) {
     if (expr == CAM_NULL)
       return CAM_NULL;
     if (wil_ast_consume(context, WIL_LEXER_TOKEN_RIGHT_PAREN,
-                        WIL_AST_ERR_RIGHT_PARAN_EXPECTED) == CAM_NULL)
+                        WIL_ERR_CODE_RIGHT_PARAN_EXPECTED) == CAM_NULL)
       return CAM_NULL;
     printf("|matched right_paren keyword <- good thing.\n");
     return wil_ast_mk_group_(context, expr);
@@ -227,9 +220,10 @@ wil_ast_expr_t *wil_ast_parse_primary(wil_ast_parser_context_t *context) {
 }
 
 wil_ast_parser_context_t
-wil_ast_create_parser_context(wil_lexer_context_t *context) {
+wil_ast_create_parser_context(wil_err_context_t *err,
+                              wil_lexer_context_t *context) {
   wil_ast_parser_context_t c = {
-      .index = 0, .tokens = context->tokens, .ar = CAM_NULL};
+      .err = err, .index = 0, .tokens = context->tokens, .ar = CAM_NULL};
   cam_type_create_arena(&c.ar, WIL_AST_DEF_AR_SIZE);
 
   return c;

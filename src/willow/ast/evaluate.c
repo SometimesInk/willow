@@ -1,8 +1,20 @@
 #include <camellia/camellia.h>
+#include <camellia/type/string.h>
+#include <stdio.h>
 #include <willow/ast/evaluate.h>
 #include <willow/ast/expressions.h>
 #include <willow/err/err.h>
 #include <willow/lexer/tokens.h>
+
+CAM_STATIC cam_int_t wil_ast_numeral_(wil_ast_value_t val) {
+  return val.type == WIL_AST_VALUE_TYPE_INTEGER ||
+         val.type == WIL_AST_VALUE_TYPE_FLOAT;
+}
+
+CAM_STATIC cam_int_t wil_ast_both_numerals_(wil_ast_value_t a,
+                                            wil_ast_value_t b) {
+  return wil_ast_numeral_(a) && wil_ast_numeral_(b);
+}
 
 CAM_STATIC cam_int_t wil_ast_truthiness_(wil_ast_value_t val) {
   switch (val.type) {
@@ -30,13 +42,40 @@ CAM_STATIC cam_int_t wil_ast_truthiness_(wil_ast_value_t val) {
   return CAM_TRUE;
 }
 
-CAM_STATIC cam_int_t wil_ast_equal_(wil_ast_value_t a, wil_ast_value_t b) {
-  return wil_ast_truthiness_(a) == wil_ast_truthiness_(b);
+CAM_STATIC cam_int_t wil_ast_equal_(wil_ast_interpreter_context_t *c,
+                                    wil_ast_value_t a, wil_ast_value_t b,
+                                    wil_ast_expr_t *expr) {
+  if (a.type != b.type) {
+    wil_err_emit_e(c->err, WIL_ERR_CODE_EQUAL_TYPES_DIFFER, expr);
+    return CAM_FALSE;
+  }
+  switch (a.type) {
+  case WIL_AST_VALUE_TYPE_FLOAT:
+    return a.val.decimal == b.val.decimal;
+    break;
+  case WIL_AST_VALUE_TYPE_INTEGER:
+    return a.val.integer == b.val.integer;
+    break;
+  case WIL_AST_VALUE_TYPE_STRING:
+    return a.val.string.len == b.val.string.len &&
+           cam_type_str_match(a.val.string.str, b.val.string.str,
+                              a.val.string.len);
+    break;
+  case WIL_AST_VALUE_TYPE_CHAR:
+    return a.val.c == b.val.c;
+    break;
+  case WIL_AST_VALUE_TYPE_BOOLEAN:
+    return a.val.boolean == b.val.boolean;
+    break;
+  case WIL_AST_VALUE_TYPE_NULL:
+    return CAM_TRUE;
+    break;
+  }
+  return CAM_TRUE;
 }
 
 CAM_STATIC wil_ast_value_t wil_ast_eval_lit_(wil_ast_interpreter_context_t *c,
                                              wil_ast_expr_t *expr) {
-  wil_ast_value_t out;
   switch (expr->lit.token.type) {
   case WIL_LEXER_TOKEN_KW_FALSE:
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_BOOLEAN,
@@ -57,7 +96,7 @@ CAM_STATIC wil_ast_value_t wil_ast_eval_lit_(wil_ast_interpreter_context_t *c,
                              .val.decimal = expr->lit.token.literal.decimal};
   }
   wil_err_emit_e(c->err, WIL_ERR_CODE_LIT_TYPE, expr,
-                 wil_lexer_token_type_name[expr->unary.op->type]);
+                 wil_lexer_token_type_name[expr->lit.token.type]);
   return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
 }
 
@@ -100,10 +139,7 @@ CAM_STATIC wil_ast_value_t wil_ast_eval_unary_(wil_ast_interpreter_context_t *c,
 CAM_STATIC wil_ast_value_t
 wil_ast_eval_binary_slash_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
                            wil_ast_value_t b, wil_ast_expr_t *expr) {
-  if ((a.type != WIL_AST_VALUE_TYPE_INTEGER &&
-       a.type != WIL_AST_VALUE_TYPE_FLOAT) ||
-      (b.type != WIL_AST_VALUE_TYPE_INTEGER &&
-       b.type != WIL_AST_VALUE_TYPE_FLOAT)) {
+  if (!wil_ast_both_numerals_(a, b)) {
     wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_SLASH_TYPE, expr);
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
   }
@@ -122,6 +158,7 @@ wil_ast_eval_binary_slash_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
       b.type == WIL_AST_VALUE_TYPE_FLOAT ? b.val.decimal : (float)b.val.integer;
   if (rhs == 0.0) {
     wil_err_emit_e(c->err, WIL_ERR_CODE_DIV_ZERO, expr);
+    return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
   }
   return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_FLOAT,
                            .val.decimal = lhs / rhs};
@@ -130,10 +167,7 @@ wil_ast_eval_binary_slash_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
 CAM_STATIC wil_ast_value_t
 wil_ast_eval_binary_star_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
                           wil_ast_value_t b, wil_ast_expr_t *expr) {
-  if ((a.type != WIL_AST_VALUE_TYPE_INTEGER &&
-       a.type != WIL_AST_VALUE_TYPE_FLOAT) ||
-      (b.type != WIL_AST_VALUE_TYPE_INTEGER &&
-       b.type != WIL_AST_VALUE_TYPE_FLOAT)) {
+  if (!wil_ast_both_numerals_(a, b)) {
     wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_STAR_TYPE, expr);
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
   }
@@ -153,10 +187,7 @@ wil_ast_eval_binary_star_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
 CAM_STATIC wil_ast_value_t
 wil_ast_eval_binary_minus_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
                            wil_ast_value_t b, wil_ast_expr_t *expr) {
-  if ((a.type != WIL_AST_VALUE_TYPE_INTEGER &&
-       a.type != WIL_AST_VALUE_TYPE_FLOAT) ||
-      (b.type != WIL_AST_VALUE_TYPE_INTEGER &&
-       b.type != WIL_AST_VALUE_TYPE_FLOAT)) {
+  if (!wil_ast_both_numerals_(a, b)) {
     wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_MINUS_TYPE, expr);
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
   }
@@ -176,10 +207,7 @@ wil_ast_eval_binary_minus_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
 CAM_STATIC wil_ast_value_t
 wil_ast_eval_binary_plus_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
                           wil_ast_value_t b, wil_ast_expr_t *expr) {
-  if ((a.type != WIL_AST_VALUE_TYPE_INTEGER &&
-       a.type != WIL_AST_VALUE_TYPE_FLOAT) ||
-      (b.type != WIL_AST_VALUE_TYPE_INTEGER &&
-       b.type != WIL_AST_VALUE_TYPE_FLOAT)) {
+  if (!wil_ast_both_numerals_(a, b)) {
     wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_PLUS_TYPE, expr);
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
   }
@@ -258,7 +286,7 @@ wil_ast_eval_binary_less_(wil_ast_interpreter_context_t *c, wil_ast_value_t a,
       b.type == WIL_AST_VALUE_TYPE_INTEGER)
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_BOOLEAN,
                              .val.boolean = a.val.decimal < b.val.integer};
-  wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_GREATER_TYPE, expr);
+  wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_LESS_TYPE, expr);
   return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
 }
 
@@ -280,7 +308,7 @@ CAM_STATIC wil_ast_value_t wil_ast_eval_binary_less_equal_(
       b.type == WIL_AST_VALUE_TYPE_INTEGER)
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_BOOLEAN,
                              .val.boolean = a.val.decimal <= b.val.integer};
-  wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_GREATER_EQUAL_TYPE, expr);
+  wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_LESS_EQUAL_TYPE, expr);
   return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
 }
 
@@ -307,13 +335,13 @@ wil_ast_eval_binary_(wil_ast_interpreter_context_t *c, wil_ast_expr_t *expr) {
     return wil_ast_eval_binary_less_equal_(c, a, b, expr);
   case WIL_LEXER_TOKEN_BANG_EQUAL:
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_BOOLEAN,
-                             .val.boolean = wil_ast_equal_(a, b)};
+                             .val.boolean = !wil_ast_equal_(c, a, b, expr)};
   case WIL_LEXER_TOKEN_EQUAL_EQUAL:
     return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_BOOLEAN,
-                             .val.boolean = !wil_ast_equal_(a, b)};
+                             .val.boolean = wil_ast_equal_(c, a, b, expr)};
   }
   wil_err_emit_e(c->err, WIL_ERR_CODE_BINARY_TYPE, expr,
-                 wil_lexer_token_type_name[expr->unary.op->type]);
+                 wil_lexer_token_type_name[expr->binary.op->type]);
   return (wil_ast_value_t){.type = WIL_AST_VALUE_TYPE_NONE};
 }
 
@@ -328,4 +356,30 @@ wil_ast_value_t wil_ast_eval_expr(wil_ast_interpreter_context_t *c,
   }
 
   // Unreachable
+}
+
+void wil_ast_print_eval_value(wil_ast_value_t val) {
+  switch (val.type) {
+  case WIL_AST_VALUE_TYPE_NONE:
+    printf("none\n");
+    break;
+  case WIL_AST_VALUE_TYPE_BOOLEAN:
+    printf(val.val.boolean == CAM_TRUE ? "true\n" : "false\n");
+    break;
+  case WIL_AST_VALUE_TYPE_STRING:
+    printf("%.*s\n", (cam_int_t)val.val.string.len, val.val.string.str);
+    break;
+  case WIL_AST_VALUE_TYPE_NULL:
+    printf("null\n");
+    break;
+  case WIL_AST_VALUE_TYPE_CHAR:
+    printf("%c\n", val.val.c);
+    break;
+  case WIL_AST_VALUE_TYPE_INTEGER:
+    printf("%d\n", val.val.integer);
+    break;
+  case WIL_AST_VALUE_TYPE_FLOAT:
+    printf("%f\n", val.val.decimal);
+    break;
+  }
 }

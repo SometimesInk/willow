@@ -2,23 +2,12 @@
 #define WIL__AST_PARSER_UTILS_H__
 
 #include <willow/ast/parser.h>
+#include <willow/err/err.h>
 #include <willow/lexer/tokens.h>
-
-// Parser errors
-typedef enum {
-  WIL_AST_ERR_NONE,
-#define X(err, msg) err,
-#include <willow/ast/err.inc>
-#undef X
-  /**
-   * @brief Length of `wil_ast_err_t` enum.
-   */
-  WIL_AST_ERR_LEN,
-} wil_ast_err_t;
 
 extern wil_lexer_token_t *wil_ast_consume(wil_ast_parser_context_t *context,
                                           wil_lexer_token_type_t type,
-                                          wil_ast_err_t err);
+                                          wil_err_code_t err);
 
 extern cam_int_t wil_ast_is_at_end(wil_ast_parser_context_t *context);
 

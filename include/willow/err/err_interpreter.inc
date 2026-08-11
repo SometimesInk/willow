@@ -1,4 +1,6 @@
-X(LIT_TYPE, INTERPRETER, ERROR, "unimplemented lit operator '%s'")
+X(EQUAL_TYPES_DIFFER, INTERPRETER, ERROR,
+  "equal operation types '%s' and '%s' differ")
+X(LIT_TYPE, INTERPRETER, ERROR, "unimplemented literal operator '%s'")
 X(UNARY_TYPE, INTERPRETER, ERROR, "unimplemented unary operator '%s'")
 X(UNARY_MINUS_TYPE, INTERPRETER, ERROR,
   "unary minus operator requires a numeral expression")

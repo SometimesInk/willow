@@ -16,38 +16,44 @@ target_link_libraries(willow PUBLIC camellia::camellia)
 target_sources(
   willow
   PRIVATE src/willow/sys/env.c
-          src/willow/io/io.c
-          src/willow/conf/config.c
-          src/willow/conf/parser.c
-          src/willow/lexer/lexer.c
-          src/willow/lexer/lexer_utils.c
-          src/willow/lexer/tokens.c
-          src/willow/ast/parser.c
-          src/willow/ast/parser_utils.c
+  src/willow/io/io.c
+  src/willow/err/err.c
+  src/willow/conf/config.c
+  src/willow/conf/parser.c
+  src/willow/lexer/lexer.c
+  src/willow/lexer/lexer_utils.c
+  src/willow/lexer/tokens.c
+  src/willow/ast/evaluate.c
+  src/willow/ast/parser.c
+  src/willow/ast/parser_utils.c
   PUBLIC FILE_SET
-         HEADERS
-         BASE_DIRS
-         include
-         FILES
-         include/willow/ast/expressions.h
-         include/willow/ast/expressions.inc
-         include/willow/ast/parser.h
-         include/willow/ast/parser_utils.h
-         include/willow/ast/err.inc
-         include/willow/lexer/lexer.h
-         include/willow/lexer/lexer_utils.h
-         include/willow/lexer/tokens.h
-         include/willow/lexer/keyword_definitions.inc
-         include/willow/lexer/token_definitions.inc
-         include/willow/conf/config.h
-         include/willow/conf/parser.h
-         include/willow/io/io.h
-         include/willow/sys/env.h)
+  HEADERS
+  BASE_DIRS
+  include
+  FILES
+  include/willow/ast/evaluate.h
+  include/willow/ast/expressions.h
+  include/willow/ast/expressions.inc
+  include/willow/ast/parser.h
+  include/willow/err/err.h
+  include/willow/err/err_interpreter.inc
+  include/willow/err/err_lexer.inc
+  include/willow/err/err_parser.inc
+  include/willow/ast/parser_utils.h
+  include/willow/lexer/lexer.h
+  include/willow/lexer/lexer_utils.h
+  include/willow/lexer/tokens.h
+  include/willow/lexer/keyword_definitions.inc
+  include/willow/lexer/token_definitions.inc
+  include/willow/conf/config.h
+  include/willow/conf/parser.h
+  include/willow/io/io.h
+  include/willow/sys/env.h)
 
 target_include_directories(
   willow
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>
+  $<INSTALL_INTERFACE:include>
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 target_compile_features(willow PUBLIC c_std_11)
